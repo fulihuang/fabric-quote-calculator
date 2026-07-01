@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>纺织面料报价计算器</title>
+<style>
+  :root {
+    --bg: #f7f3ed;
+    --surface: #ffffff;
+    --surface-alt: #faf7f2;
+    --text: #2c2416;
+    --text-secondary: #6b5e4a;
+    --text-tertiary: #9b8b73;
+    --border: #e3d9c8;
+    --accent: #3d5a80;
+    --accent-hover: #2c4466;
+    --accent-light: #e8eff6;
+    --highlight: #c17a3e;
+    --highlight-light: #fdf3e7;
+    --danger: #b5453c;
+    --danger-light: #fdf0ef;
+    --shadow-sm: 0 1px 3px rgba(44,36,22,0.06);
+    --shadow-md: 0 4px 12px rgba(44,36,22,0.08);
+    --radius-sm: 6px;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --font: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    font-family: var(--font);
+    font-size: 15px;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 16px;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header {
+    padding: 20px 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-icon {
+    width: 40px; height: 40px;
+    background: var(--accent);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; color: #fff;
+  }
+  .header-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .header-sub {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+  }
+
+  .unit-toggle {
+    display: flex;
+    background: var(--surface-alt);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .unit-toggle button {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: var(--font);
+    border: none;
+    background: transparent;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .unit-toggle button.active {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 18px;
+    box-shadow: 0 1px 3px rgba(61,90,128,0.3);
+  }
+
+  .section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+  }
+  .section-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::before {
+    content: '';
+    width: 3px; height: 16px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .form-row:last-child { margin-bottom: 0; }
+  .form-group { flex: 1; min-width: 120px; }
+
+  .form-label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+  }
+  .form-label .unit {
+    font-weight: 400;
+    color: var(--text-tertiary);
+    font-size: 0.72rem;
+  }
+
+  input[type="number"],
+  input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.92rem;
+    font-family: var(--font);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface-alt);
+    color: var(--text);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+    background: #fff;
+  }
+  input::placeholder { color: var(--text-tertiary); }
+
+  .process-list { display: flex; flex-direction: column; gap: 8px; }
+  .process-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: var(--surface-alt);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    transition: border-color 0.15s ease;
+  }
+  .process-item:hover { border-color: var(--accent); }
+  .process-item .proc-num {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    min-width: 20px;
+  }
+  .process-item input {
+    flex: 1;
+    padding: 7px 10px;
+    font-size: 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    min-width: 0;
+  }
+  .process-item input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-light);
+    outline: none;
+  }
+  .btn-remove {
+    width: 30px; height: 30px;
+    border: none; border-radius: 50%;
+    background: var(--danger-light);
+    color: var(--danger);
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .btn-remove:hover { background: #f5d6d4; }
+  .btn-remove:active { transform: scale(0.9); }
+
+  .btn-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-top: 8px;
+  }
+  .btn-add:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .btn-add:active { transform: scale(0.97); }
+
+  .result-section {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  .result-header {
+    padding: 16px 18px;
+    background: var(--accent);
+    color: #fff;
+  }
+  .result-header-label {
+    font-size: 0.78rem;
+    opacity: 0.85;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .result-header-price {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-top: 2px;
+  }
+  .result-header-price .unit {
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
+  .result-breakdown { padding: 14px 18px; }
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 0.84rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .breakdown-row:last-child { border-bottom: none; }
+  .breakdown-label {
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .breakdown-label .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+  .breakdown-value {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+  .breakdown-row.highlight {
+    background: var(--highlight-light);
+    margin: 0 -18px;
+    padding: 10px 18px;
+    border-bottom: none;
+    border-radius: var(--radius-sm);
+  }
+  .breakdown-row.highlight .breakdown-value {
+    color: var(--highlight);
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .empty-hint {
+    text-align: center;
+    padding: 24px 18px;
+    color: var(--text-tertiary);
+    font-size: 0.82rem;
+  }
+  .footer {
+    text-align: center;
+    padding: 20px 0 16px;
+    font-size: 0.7rem;
+    color: var(--text-tertiary);
+  }
+
+  @media (max-width: 380px) {
+    body { padding: 10px; }
+    .section { padding: 14px; }
+    .form-row { gap: 8px; }
+    input[type="number"], input[type="text"] { padding: 9px 10px; font-size: 0.85rem; }
+    .header { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="header-icon">布</div>
+    <div>
+      <div class="header-title">面料报价计算器</div>
+      <div class="header-sub">填入参数，实时计算销售价</div>
+    </div>
+  </div>
+  <div class="unit-toggle" id="unitToggle">
+    <button data-unit="元/米">元/米</button>
+    <button data-unit="元/公斤" class="active">元/公斤</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">基础参数</div>
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">坯布价格 <span class="unit" data-unit-label>元/公斤</span></label>
+      <input type="number" id="fabricPrice" placeholder="例：12.50" step="0.01" min="0" autofocus>
+    </div>
+    <div class="form-group">
+      <label class="form-label">染整损耗率 <span class="unit">%</span></label>
+      <input type="number" id="lossRate" placeholder="例：5" step="0.1" min="0">
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">染整加工费</div>
+  <div class="process-list" id="processList">
+    <div class="process-item">
+      <span class="proc-num">1</span>
+      <input type="text" class="proc-name" placeholder="工序名称，例：预定型" style="flex:1.2">
+      <input type="number" class="proc-price" placeholder="元/公斤" step="0.01" min="0" style="flex:0.8" data-unit-placeholder>
+      <button class="btn-remove" title="删除" onclick="removeProcess(this)">&times;</button>
+    </div>
+  </div>
+  <button class="btn-add" onclick="addProcess()">
+    <span style="font-size:1.2em;line-height:1">+</span> 添加工序
+  </button>
+</div>
+
+<div class="section">
+  <div class="section-title">费用与利润</div>
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">运营管理费 <span class="unit" data-unit-label>元/公斤</span></label>
+      <input type="number" id="managementFee" value="0.95" step="0.01" min="0">
+    </div>
+    <div class="form-group">
+      <label class="form-label">运费 <span class="unit" data-unit-label>元/公斤</span></label>
+      <input type="number" id="shippingFee" placeholder="例：1.50" step="0.01" min="0">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">税点系数</label>
+      <input type="number" id="taxRate" value="1.06" step="0.001" min="1">
+    </div>
+    <div class="form-group">
+      <label class="form-label">利润率 <span class="unit">%</span></label>
+      <input type="number" id="profitRate" placeholder="例：8" step="0.1" min="0">
+    </div>
+  </div>
+</div>
+
+<div class="result-section">
+  <div class="result-header">
+    <div class="result-header-label">最终销售价</div>
+    <div class="result-header-price" id="finalPrice">— <span class="unit">元/公斤</span></div>
+  </div>
+  <div class="result-breakdown" id="breakdown">
+    <div class="empty-hint">请填入坯布价格和至少一道染整加工费即可开始计算</div>
+  </div>
+</div>
+
+<div class="footer">纺织面料报价计算器 &middot; 数据仅在本地计算</div>
+
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+
+  var currentUnit = '元/公斤';
+
+  var fabricPrice = $('fabricPrice');
+  var lossRate = $('lossRate');
+  var managementFee = $('managementFee');
+  var shippingFee = $('shippingFee');
+  var taxRate = $('taxRate');
+  var profitRate = $('profitRate');
+  var processList = $('processList');
+  var breakdown = $('breakdown');
+  var finalPrice = $('finalPrice');
+
+  $('unitToggle').addEventListener('click', function(e){
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    var unit = btn.dataset.unit;
+    if (unit === currentUnit) return;
+    currentUnit = unit;
+    this.querySelectorAll('button').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    updateUnitLabels();
+    recompute();
+  });
+
+  function updateUnitLabels(){
+    var labels = document.querySelectorAll('[data-unit-label]');
+    for (var i = 0; i < labels.length; i++) { labels[i].textContent = currentUnit; }
+    var placeholders = document.querySelectorAll('[data-unit-placeholder]');
+    for (var j = 0; j < placeholders.length; j++) { placeholders[j].placeholder = currentUnit; }
+    var unitSpan = finalPrice.querySelector('.unit');
+    if (unitSpan) unitSpan.textContent = currentUnit;
+  }
+
+  function collectProcesses(){
+    var items = processList.querySelectorAll('.process-item');
+    var result = [];
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      var name = item.querySelector('.proc-name').value.trim();
+      var price = parseFloat(item.querySelector('.proc-price').value);
+      if (name || !isNaN(price)) {
+        result.push({ name: name || '未命名工序', price: isNaN(price) ? 0 : price });
+      }
+    }
+    return result;
+  }
+
+  function formatMoney(v){
+    if (Math.abs(v) < 0.001) return '0.00';
+    return v.toFixed(2);
+  }
+
+  function recompute(){
+    var p = parseFloat(fabricPrice.value);
+    var l = parseFloat(lossRate.value) || 0;
+    var m = parseFloat(managementFee.value) || 0;
+    var s = parseFloat(shippingFee.value) || 0;
+    var t = parseFloat(taxRate.value) || 1;
+    var pr = parseFloat(profitRate.value) || 0;
+
+    var processes = collectProcesses();
+    var processTotal = 0;
+    for (var i = 0; i < processes.length; i++) { processTotal += processes[i].price; }
+
+    var hasBase = !isNaN(p) && (processTotal > 0 || processes.length > 0);
+
+    if (!hasBase) {
+      finalPrice.innerHTML = '— <span class="unit">' + currentUnit + '</span>';
+      breakdown.innerHTML = '<div class="empty-hint">请填入坯布价格和至少一道染整加工费即可开始计算</div>';
+      return;
+    }
+
+    var baseP = isNaN(p) ? 0 : p;
+    var step1 = processTotal;
+    var step2 = (baseP + step1) * (1 + l / 100);
+    var step3 = step2 + m;
+    var step4 = step3 + s;
+    var step5 = step4 * t;
+    var step6 = step5 * (1 + pr / 100);
+
+    finalPrice.innerHTML = formatMoney(step6) + ' <span class="unit">' + currentUnit + '</span>';
+
+    var colors = ['#3d5a80','#5c7c99','#7a9bb5','#98b8d0','#b5d3e8','#d4eaf7'];
+    var u = currentUnit;
+    var html = '';
+
+    if (!isNaN(p)) {
+      html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[0] + '"></span>坯布价格</span><span class="breakdown-value">' + formatMoney(baseP) + ' ' + u + '</span></div>';
+    }
+
+    if (processes.length > 0) {
+      for (var k = 0; k < processes.length; k++) {
+        html += '<div class="breakdown-row"><span class="breakdown-label" style="padding-left:16px">└ ' + processes[k].name + '</span><span class="breakdown-value">' + formatMoney(processes[k].price) + ' ' + u + '</span></div>';
+      }
+      html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[0] + '"></span>加工费合计</span><span class="breakdown-value">' + formatMoney(step1) + ' ' + u + '</span></div>';
+    }
+
+    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[1] + '"></span>染整成本 (含' + l + '%损耗)</span><span class="breakdown-value">' + formatMoney(step2) + ' ' + u + '</span></div>';
+    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[2] + '"></span>含管理费</span><span class="breakdown-value">' + formatMoney(step3) + ' ' + u + '</span></div>';
+
+    if (s > 0) {
+      html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[3] + '"></span>含运费</span><span class="breakdown-value">' + formatMoney(step4) + ' ' + u + '</span></div>';
+    }
+
+    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[4] + '"></span>含税价 (×' + t + ')</span><span class="breakdown-value">' + formatMoney(step5) + ' ' + u + '</span></div>';
+
+    if (pr > 0) {
+      html += '<div class="breakdown-row highlight"><span class="breakdown-label"><span class="dot" style="background:' + colors[5] + '"></span>含利润 (' + pr + '%)</span><span class="breakdown-value">' + formatMoney(step6) + ' ' + u + '</span></div>';
+    }
+
+    breakdown.innerHTML = html;
+  }
+
+  window.addProcess = function(){
+    var items = processList.querySelectorAll('.process-item');
+    var idx = items.length + 1;
+    var div = document.createElement('div');
+    div.className = 'process-item';
+    div.innerHTML =
+      '<span class="proc-num">' + idx + '</span>' +
+      '<input type="text" class="proc-name" placeholder="工序名称" style="flex:1.2">' +
+      '<input type="number" class="proc-price" placeholder="' + currentUnit + '" step="0.01" min="0" style="flex:0.8" data-unit-placeholder>' +
+      '<button class="btn-remove" title="删除" onclick="removeProcess(this)">&times;</button>';
+    processList.appendChild(div);
+    bindInputs(div);
+    refreshNumbers();
+    recompute();
+  };
+
+  window.removeProcess = function(btn){
+    var items = processList.querySelectorAll('.process-item');
+    if (items.length <= 1) {
+      var inputs = items[0].querySelectorAll('input');
+      inputs[0].value = '';
+      inputs[1].value = '';
+      recompute();
+      return;
+    }
+    btn.closest('.process-item').remove();
+    refreshNumbers();
+    recompute();
+  };
+
+  function refreshNumbers(){
+    var items = processList.querySelectorAll('.process-item');
+    for (var i = 0; i < items.length; i++) {
+      items[i].querySelector('.proc-num').textContent = i + 1;
+    }
+  }
+
+  function bindInputs(container){
+    var inputs = container.querySelectorAll('input');
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].addEventListener('input', recompute);
+    }
+  }
+
+  var fixedInputs = [fabricPrice, lossRate, managementFee, shippingFee, taxRate, profitRate];
+  for (var i = 0; i < fixedInputs.length; i++) {
+    fixedInputs[i].addEventListener('input', recompute);
+  }
+
+  var initialProcesses = document.querySelectorAll('.process-item');
+  for (var j = 0; j < initialProcesses.length; j++) { bindInputs(initialProcesses[j]); }
+
+  var allNumbers = document.querySelectorAll('input[type="number"]');
+  for (var k = 0; k < allNumbers.length; k++) {
+    allNumbers[k].addEventListener('change', function(){
+      if (this.value && parseFloat(this.value) < 0) this.value = 0;
+      recompute();
+    });
+  }
+
+  recompute();
+})();
+</script>
+
+</body>
+</html>
