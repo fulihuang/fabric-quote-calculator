@@ -7,7 +7,7 @@
 <style>
   :root {
     --bg: #f7f3ed;
-    --surface: #ffffff;
+    --surface: #fff;
     --surface-alt: #faf7f2;
     --text: #2c2416;
     --text-secondary: #6b5e4a;
@@ -22,300 +22,189 @@
     --shadow-sm: 0 1px 3px rgba(44,36,22,0.06);
     --shadow-md: 0 4px 12px rgba(44,36,22,0.08);
     --radius-sm: 6px;
-    --radius: 10px;
     --radius-lg: 14px;
-    --font: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+    --font: 'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans SC',system-ui,sans-serif;
   }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-  html {
-    font-family: var(--font);
-    font-size: 15px;
-    color: var(--text);
-    background: var(--bg);
-    -webkit-font-smoothing: antialiased;
-  }
-
-  body {
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 16px;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
+  html{
+    font-family:var(--font);
+    font-size:15px;
+    color:var(--text);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased
   }
 
-  .header {
-    padding: 20px 0 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .header-icon {
-    width: 40px; height: 40px;
-    background: var(--accent);
-    border-radius: var(--radius-sm);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; color: #fff;
-  }
-  .header-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .header-sub {
-    font-size: 0.8rem;
-    color: var(--text-tertiary);
-    margin-top: 2px;
+  body{
+    max-width:480px;
+    margin:0 auto;
+    padding:16px;
+    min-height:100dvh
   }
 
-  .section {
-    background: var(--surface);
-    border-radius: var(--radius-lg);
-    padding: 18px;
-    margin-bottom: 14px;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border);
+  .header{
+    padding:20px 0 12px;
+    display:flex;
+    align-items:center;
+    gap:12px
   }
-  .section-title {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .header-icon{
+    width:40px;height:40px;
+    background:var(--accent);
+    border-radius:var(--radius-sm);
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;color:#fff
   }
-  .section-title::before {
-    content: '';
-    width: 3px; height: 16px;
-    background: var(--accent);
-    border-radius: 2px;
+  .header-title{font-size:1.25rem;font-weight:700}
+  .header-sub{font-size:.8rem;color:var(--text-tertiary);margin-top:2px}
+
+  .section{
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--border)
+  }
+  .section-title{
+    font-size:.85rem;font-weight:700;color:var(--accent);
+    letter-spacing:.06em;margin-bottom:14px;
+    display:flex;align-items:center;gap:8px
+  }
+  .section-title::before{
+    content:'';width:3px;height:16px;
+    background:var(--accent);border-radius:2px
   }
 
-  .form-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  .form-row:last-child { margin-bottom: 0; }
-  .form-group { flex: 1; min-width: 100px; }
+  .form-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+  .form-row:last-child{margin-bottom:0}
+  .form-group{flex:1;min-width:100px}
 
-  .form-label {
-    display: block;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: 5px;
+  .form-label{
+    display:block;font-size:.78rem;font-weight:600;
+    color:var(--text-secondary);margin-bottom:5px
   }
-  .form-label .unit {
-    font-weight: 400;
-    color: var(--text-tertiary);
-    font-size: 0.72rem;
-  }
+  .form-label .unit{font-weight:400;color:var(--text-tertiary);font-size:.72rem}
 
-  input[type="number"] {
-    width: 100%;
-    padding: 10px 12px;
-    font-size: 0.92rem;
-    font-family: var(--font);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--surface-alt);
-    color: var(--text);
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    outline: none;
-    -webkit-appearance: none;
+  input[type=number]{
+    width:100%;padding:10px 12px;font-size:.92rem;
+    font-family:var(--font);
+    border:1.5px solid var(--border);border-radius:var(--radius-sm);
+    background:var(--surface-alt);color:var(--text);
+    outline:none;-webkit-appearance:none
   }
-  input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-light);
-    background: #fff;
-  }
-  input::placeholder { color: var(--text-tertiary); }
+  input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+  input::placeholder{color:var(--text-tertiary)}
 
-  .meter-price-display {
-    margin-top: 10px;
-    padding: 10px 14px;
-    background: var(--accent-light);
-    border-radius: var(--radius-sm);
-    font-size: 0.85rem;
-    color: var(--accent);
-    font-weight: 600;
-    display: none;
+  .process-list{display:flex;flex-direction:column;gap:8px}
+  .process-item{
+    display:flex;align-items:center;gap:8px;
+    padding:10px 12px;background:var(--surface-alt);
+    border-radius:var(--radius-sm);border:1px solid var(--border)
   }
-  .meter-price-display.visible { display: block; }
-
-  .process-list { display: flex; flex-direction: column; gap: 8px; }
-  .process-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 12px;
-    background: var(--surface-alt);
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
+  .process-item .proc-num{
+    font-size:.75rem;font-weight:700;color:var(--text-tertiary);
+    white-space:nowrap;min-width:36px
   }
-  .process-item .proc-num {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--text-tertiary);
-    white-space: nowrap;
-    min-width: 36px;
+  .process-item input{
+    flex:1;padding:7px 10px;font-size:.85rem;
+    border:1px solid var(--border);border-radius:var(--radius-sm);
+    background:#fff;min-width:0;font-family:var(--font)
   }
-  .process-item input {
-    flex: 1;
-    padding: 7px 10px;
-    font-size: 0.85rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: #fff;
-    min-width: 0;
-    font-family: var(--font);
-  }
-  .process-item input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px var(--accent-light);
-    outline: none;
-  }
-  .btn-remove {
-    width: 30px; height: 30px;
-    border: none; border-radius: 50%;
-    background: var(--danger-light);
-    color: var(--danger);
-    cursor: pointer;
-    font-size: 1.1rem;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s ease, transform 0.1s ease;
-  }
-  .btn-remove:hover { background: #f5d6d4; }
-  .btn-remove:active { transform: scale(0.9); }
-
-  .btn-add {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 9px 16px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    border: 1.5px dashed var(--border);
-    border-radius: var(--radius-sm);
-    background: transparent;
-    color: var(--accent);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    margin-top: 8px;
-  }
-  .btn-add:hover { border-color: var(--accent); background: var(--accent-light); }
-  .btn-add:active { transform: scale(0.97); }
-
-  .result-section {
-    background: var(--surface);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--border);
-    overflow: hidden;
-    margin-top: 4px;
-  }
-  .result-header {
-    padding: 16px 18px;
-    background: var(--accent);
-    color: #fff;
-  }
-  .result-header-label {
-    font-size: 0.78rem;
-    opacity: 0.85;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-  .result-header-price {
-    font-size: 2rem;
-    font-weight: 800;
-    line-height: 1.15;
-    margin-top: 2px;
-  }
-  .result-header-price .tax-line {
-    font-size: 0.85rem;
-    font-weight: 500;
-    opacity: 0.8;
-    margin-top: 4px;
-    display: block;
+  .process-item input:focus{
+    border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-light);outline:none
   }
 
-  .result-breakdown { padding: 14px 18px; }
-  .breakdown-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    font-size: 0.84rem;
-    border-bottom: 1px solid var(--border);
+  .btn-remove{
+    width:30px;height:30px;border:none;border-radius:50%;
+    background:var(--danger-light);color:var(--danger);
+    cursor:pointer;font-size:1.1rem;
+    display:flex;align-items:center;justify-content:center
   }
-  .breakdown-row:last-child { border-bottom: none; }
-  .breakdown-label {
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  .btn-remove:hover{background:#f5d6d4}
+  .btn-remove:active{transform:scale(.9)}
+
+  .btn-add{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:9px 16px;font-size:.82rem;font-weight:600;
+    border:1.5px dashed var(--border);border-radius:var(--radius-sm);
+    background:transparent;color:var(--accent);cursor:pointer;margin-top:8px
   }
-  .breakdown-label .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    flex-shrink: 0;
+  .btn-add:hover{border-color:var(--accent);background:var(--accent-light)}
+  .btn-add:active{transform:scale(.97)}
+
+  .result-section{
+    background:var(--surface);border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-md);border:1px solid var(--border);
+    overflow:hidden;margin-top:4px
   }
-  .breakdown-value {
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    color: var(--text);
+  .result-header{
+    padding:16px 18px;background:var(--accent);color:#fff
   }
-  .breakdown-row.highlight {
-    background: var(--highlight-light);
-    margin: 0 -18px;
-    padding: 10px 18px;
-    border-bottom: none;
-    border-radius: var(--radius-sm);
+  .result-header-label{
+    font-size:.78rem;opacity:.85;letter-spacing:.04em
   }
-  .breakdown-row.highlight .breakdown-value {
-    color: var(--highlight);
-    font-size: 0.95rem;
-    font-weight: 700;
+  .result-price-row{
+    display:flex;gap:24px;margin-top:8px;flex-wrap:wrap
   }
-  .breakdown-row.final {
-    margin: 0 -18px;
-    padding: 12px 18px;
-    background: var(--accent-light);
-    border-bottom: none;
-    border-radius: var(--radius-sm);
-    font-weight: 700;
+  .result-price-item{flex:1;min-width:130px}
+  .result-price-item .price-label{
+    font-size:.7rem;opacity:.7;letter-spacing:.04em
   }
-  .breakdown-row.final .breakdown-value {
-    color: var(--accent);
-    font-size: 1rem;
-    font-weight: 800;
+  .result-price-item .price-value{
+    font-size:1.6rem;font-weight:800;line-height:1.2
   }
 
-  .empty-hint {
-    text-align: center;
-    padding: 24px 18px;
-    color: var(--text-tertiary);
-    font-size: 0.82rem;
+  .result-breakdown{padding:14px 18px}
+  .breakdown-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:8px 0;font-size:.84rem;border-bottom:1px solid var(--border)
   }
-  .footer {
-    text-align: center;
-    padding: 20px 0 16px;
-    font-size: 0.7rem;
-    color: var(--text-tertiary);
+  .breakdown-row:last-child{border-bottom:none}
+  .breakdown-label{
+    color:var(--text-secondary);display:flex;align-items:center;gap:6px
   }
+  .breakdown-label .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .breakdown-value{font-weight:600;font-variant-numeric:tabular-nums;color:var(--text)}
 
-  @media (max-width: 380px) {
-    body { padding: 10px; }
-    .section { padding: 14px; }
-    .form-row { gap: 8px; }
-    input[type="number"] { padding: 9px 10px; font-size: 0.85rem; }
+  .breakdown-row.highlight{
+    background:var(--highlight-light);margin:0 -18px;
+    padding:10px 18px;border-bottom:none;border-radius:var(--radius-sm)
+  }
+  .breakdown-row.highlight .breakdown-value{color:var(--highlight);font-size:.95rem;font-weight:700}
+
+  .breakdown-row.final{
+    margin:0 -18px;padding:12px 18px;
+    background:var(--accent-light);border-bottom:none;
+    border-radius:var(--radius-sm);font-weight:700
+  }
+  .breakdown-row.final .breakdown-value{color:var(--accent);font-size:1rem;font-weight:800}
+
+  .formula-section{
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--border)
+  }
+  .formula-list{list-style:none;padding:0}
+  .formula-list li{
+    padding:7px 0;font-size:.78rem;color:var(--text-secondary);
+    border-bottom:1px solid var(--border);line-height:1.5
+  }
+  .formula-list li:last-child{border-bottom:none}
+  .formula-list li strong{color:var(--accent);font-weight:700}
+
+  .empty-hint{text-align:center;padding:24px 18px;color:var(--text-tertiary);font-size:.82rem}
+  .footer{text-align:center;padding:20px 0 16px;font-size:.7rem;color:var(--text-tertiary)}
+
+  @media(max-width:380px){
+    body{padding:10px}.section,.formula-section{padding:14px}
+    .form-row{gap:8px}input[type=number]{padding:9px 10px;font-size:.85rem}
+    .result-price-row{gap:12px}
+    .result-price-item .price-value{font-size:1.3rem}
   }
 </style>
 </head>
@@ -325,7 +214,7 @@
   <div class="header-icon">甯?/div>
   <div>
     <div class="header-title">闈㈡枡鎶ヤ环璁＄畻鍣?/div>
-    <div class="header-sub">杈撳叆鍏枻浠锋牸鍙婅鏍硷紝鑷姩鎹㈢畻骞惰绠楁姤浠?/div>
+    <div class="header-sub">缁熶竴杈撳叆鍏?鍏枻锛岃嚜鍔ㄦ崲绠楀厓/绫?/div>
   </div>
 </div>
 
@@ -334,56 +223,52 @@
   <div class="form-row">
     <div class="form-group">
       <label class="form-label">鍧竷鍏枻浠?<span class="unit">鍏?鍏枻</span></label>
-      <input type="number" id="fabricPricePerKg" placeholder="渚嬶細50" step="0.01" min="0" autofocus>
-    </div>
-    <div class="form-group">
-      <label class="form-label">闂ㄥ箙 <span class="unit">绫?/span></label>
-      <input type="number" id="fabricWidth" placeholder="渚嬶細1.5" step="0.01" min="0">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group">
-      <label class="form-label">鍏嬮噸 <span class="unit">g/m虏</span></label>
-      <input type="number" id="fabricWeight" placeholder="渚嬶細200" step="1" min="0">
+      <input type="number" id="fabricPrice" placeholder="渚嬶細50" step="0.01" min="0" autofocus>
     </div>
     <div class="form-group">
       <label class="form-label">鎹熻€楃巼 <span class="unit">%</span></label>
       <input type="number" id="lossRate" placeholder="渚嬶細5" step="0.1" min="0" max="100">
     </div>
   </div>
-  <div class="meter-price-display" id="meterPriceDisplay">
-    鎹㈢畻绫充环锛?strong id="meterPriceValue">鈥?/strong> 鍏?绫?  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">闂ㄥ箙 <span class="unit">绫?/span></label>
+      <input type="number" id="fabricWidth" placeholder="渚嬶細1.5" step="0.01" min="0">
+    </div>
+    <div class="form-group">
+      <label class="form-label">鍏嬮噸 <span class="unit">g/m虏</span></label>
+      <input type="number" id="fabricWeight" placeholder="渚嬶細200" step="1" min="0">
+    </div>
+  </div>
 </div>
 
 <div class="section">
-  <div class="section-title">鏌撴暣鍔犲伐璐?<span class="unit">鍏?绫?/span></div>
+  <div class="section-title">鏌撴暣鍔犲伐璐?<span class="unit">鍏?鍏枻</span></div>
   <div class="process-list" id="processList">
     <div class="process-item">
       <span class="proc-num">宸ュ簭1</span>
-      <input type="number" class="proc-price" placeholder="鍏?绫? step="0.01" min="0">
+      <input type="number" class="proc-price" placeholder="鍏?鍏枻" step="0.01" min="0">
       <button class="btn-remove" title="鍒犻櫎" onclick="removeProcess(this)">&times;</button>
     </div>
   </div>
-  <button class="btn-add" onclick="addProcess()">
-    <span style="font-size:1.2em;line-height:1">+</span> 娣诲姞宸ュ簭
-  </button>
+  <button class="btn-add" onclick="addProcess()">+ 娣诲姞宸ュ簭</button>
 </div>
 
 <div class="section">
   <div class="section-title">璐圭敤涓庡埄娑?/div>
   <div class="form-row">
     <div class="form-group">
-      <label class="form-label">杩愯惀绠＄悊璐?<span class="unit">鍏?绫?/span></label>
+      <label class="form-label">杩愯惀绠＄悊璐?<span class="unit">鍏?鍏枻</span></label>
       <input type="number" id="managementFee" value="0.95" step="0.01" min="0">
     </div>
     <div class="form-group">
-      <label class="form-label">杩愯垂 <span class="unit">鍏?绫?/span></label>
+      <label class="form-label">杩愯垂 <span class="unit">鍏?鍏枻</span></label>
       <input type="number" id="shippingFee" placeholder="渚嬶細1.50" step="0.01" min="0">
     </div>
   </div>
   <div class="form-row">
     <div class="form-group">
-      <label class="form-label">鍏朵粬璐圭敤 <span class="unit">鍏?绫?/span></label>
+      <label class="form-label">鍏朵粬璐圭敤 <span class="unit">鍏?鍏枻</span></label>
       <input type="number" id="otherFee" placeholder="渚嬶細0.50" step="0.01" min="0">
     </div>
     <div class="form-group">
@@ -402,156 +287,150 @@
 
 <div class="result-section">
   <div class="result-header">
-    <div class="result-header-label">涓嶅惈绋庨攢鍞环</div>
-    <div class="result-header-price" id="finalPriceNoTax">鈥?鍏?绫?/div>
-    <div class="tax-line" id="finalPriceWithTax">鍚◣浠凤細鈥?鍏?绫?/div>
+    <div class="result-header-label">鏈€缁堟姤浠?/div>
+    <div class="result-price-row">
+      <div class="result-price-item">
+        <div class="price-label">鍏?鍏枻</div>
+        <div class="price-value" id="priceKg">鈥?/div>
+      </div>
+      <div class="result-price-item">
+        <div class="price-label">鍏?绫?(鍚◣)</div>
+        <div class="price-value" id="priceMeter">鈥?/div>
+      </div>
+    </div>
   </div>
   <div class="result-breakdown" id="breakdown">
-    <div class="empty-hint">璇峰～鍏ュ澂甯冨叕鏂や环銆侀棬骞呫€佸厠閲嶅嵆鍙紑濮嬭绠?/div>
+    <div class="empty-hint">璇峰～鍏ュ澂甯冧环鏍煎拰瑙勬牸鍗冲彲寮€濮嬭绠?/div>
   </div>
+</div>
+
+<div class="formula-section">
+  <div class="section-title">璁＄畻鍏紡</div>
+  <ul class="formula-list">
+    <li><strong>鍧竷鎴愭湰</strong> = 鍧竷鍏枻浠?梅 (1 鈭?鎹熻€楃巼%)</li>
+    <li><strong>鍔犲伐璐瑰悎璁?/strong> = 鍚勯亾宸ュ簭閲戦涔嬪拰锛堝厓/鍏枻锛?/li>
+    <li><strong>鏌撴暣鎴愭湰</strong> = 鍧竷鎴愭湰 + 鍔犲伐璐瑰悎璁?/li>
+    <li><strong>+绠＄悊璐?/strong> = 鏌撴暣鎴愭湰 + 杩愯惀绠＄悊璐?/li>
+    <li><strong>+杩愯垂</strong> = +绠＄悊璐?+ 杩愯垂 + 鍏朵粬璐圭敤</li>
+    <li><strong>涓嶅惈绋庝环</strong> = +杩愯垂 梅 (1 鈭?鍒╂鼎鐜?)</li>
+    <li><strong>鍚◣浠?鍏?鍏枻)</strong> = 涓嶅惈绋庝环 脳 绋庣偣绯绘暟</li>
+    <li><strong>姣忕背閲嶉噺(kg)</strong> = 闂ㄥ箙(绫? 脳 鍏嬮噸(g/m虏) 梅 1000</li>
+    <li><strong>鍚◣浠?鍏?绫?</strong> = 鍚◣浠?鍏?鍏枻) 脳 姣忕背閲嶉噺</li>
+  </ul>
 </div>
 
 <div class="footer">绾虹粐闈㈡枡鎶ヤ环璁＄畻鍣?/div>
 
 <script>
 (function(){
-  var $ = function(id){ return document.getElementById(id); };
+  var $=function(id){return document.getElementById(id);};
 
-  var fabricPricePerKg = $('fabricPricePerKg');
-  var fabricWidth = $('fabricWidth');
-  var fabricWeight = $('fabricWeight');
-  var lossRate = $('lossRate');
-  var managementFee = $('managementFee');
-  var shippingFee = $('shippingFee');
-  var otherFee = $('otherFee');
-  var taxRate = $('taxRate');
-  var profitRate = $('profitRate');
-  var processList = $('processList');
-  var breakdown = $('breakdown');
-  var finalPriceNoTax = $('finalPriceNoTax');
-  var finalPriceWithTax = $('finalPriceWithTax');
-  var meterPriceDisplay = $('meterPriceDisplay');
-  var meterPriceValue = $('meterPriceValue');
+  var fabricPrice=$('fabricPrice');
+  var lossRate=$('lossRate');
+  var fabricWidth=$('fabricWidth');
+  var fabricWeight=$('fabricWeight');
+  var managementFee=$('managementFee');
+  var shippingFee=$('shippingFee');
+  var otherFee=$('otherFee');
+  var taxRate=$('taxRate');
+  var profitRate=$('profitRate');
+  var processList=$('processList');
+  var breakdown=$('breakdown');
+  var priceKg=$('priceKg');
+  var priceMeter=$('priceMeter');
 
   function collectProcesses(){
-    var items = processList.querySelectorAll('.process-item');
-    var result = [];
-    for (var i = 0; i < items.length; i++) {
-      var price = parseFloat(items[i].querySelector('.proc-price').value);
-      if (!isNaN(price)) {
-        result.push({ name: '宸ュ簭' + (i + 1), price: price });
-      }
+    var items=processList.querySelectorAll('.process-item');
+    var result=[];
+    for(var i=0;i<items.length;i++){
+      var p=parseFloat(items[i].querySelector('.proc-price').value);
+      if(!isNaN(p)) result.push({name:'宸ュ簭'+(i+1),price:p});
     }
     return result;
   }
 
-  function formatMoney(v){
-    if (Math.abs(v) < 0.001) return '0.00';
-    return v.toFixed(2);
-  }
+  function num(v){return isNaN(v)?0:v;}
+  function fmt(v){return Math.abs(v)<.001?'0.00':v.toFixed(2);}
 
   function recompute(){
-    var kgPrice = parseFloat(fabricPricePerKg.value);
-    var width = parseFloat(fabricWidth.value);
-    var weight = parseFloat(fabricWeight.value);
-    var loss = parseFloat(lossRate.value) || 0;
-    var mgmt = parseFloat(managementFee.value) || 0;
-    var ship = parseFloat(shippingFee.value) || 0;
-    var other = parseFloat(otherFee.value) || 0;
-    var tax = parseFloat(taxRate.value) || 1;
-    var profit = parseFloat(profitRate.value) || 0;
+    var fp=num(parseFloat(fabricPrice.value));
+    var loss=num(parseFloat(lossRate.value));
+    var width=num(parseFloat(fabricWidth.value));
+    var weight=num(parseFloat(fabricWeight.value));
+    var mgmt=num(parseFloat(managementFee.value));
+    var ship=num(parseFloat(shippingFee.value));
+    var other=num(parseFloat(otherFee.value));
+    var tax=num(parseFloat(taxRate.value))||1;
+    var profit=num(parseFloat(profitRate.value));
 
-    var processes = collectProcesses();
-    var processTotal = 0;
-    for (var i = 0; i < processes.length; i++) { processTotal += processes[i].price; }
+    var procs=collectProcesses();
+    var procTotal=0;
+    for(var i=0;i<procs.length;i++) procTotal+=procs[i].price;
 
-    // 鍏枻浠?鈫?绫充环
-    var meterPrice = null;
-    if (!isNaN(kgPrice) && !isNaN(width) && !isNaN(weight) && width > 0) {
-      var kgPerMeter = width * weight / 1000;
-      meterPrice = kgPrice * kgPerMeter;
-      meterPriceValue.textContent = formatMoney(meterPrice);
-      meterPriceDisplay.classList.add('visible');
-    } else {
-      meterPriceDisplay.classList.remove('visible');
-    }
+    // 鍏枻缁村害瀹屾暣璁＄畻
+    var fabricCost=fp/(1-loss/100);
+    var dyeCost=fabricCost+procTotal;
+    var withMgmt=dyeCost+mgmt;
+    var withShip=withMgmt+ship+other;
+    var noTax=withShip/(1-profit/100);
+    var taxKg=noTax*tax;
 
-    var hasBase = meterPrice !== null && meterPrice > 0;
+    // 绫充环鎹㈢畻
+    var kgPerM=width>0?width*weight/1000:0;
+    var taxMeter=kgPerM>0?taxKg*kgPerM:0;
 
-    if (!hasBase) {
-      finalPriceNoTax.textContent = '鈥?鍏?绫?;
-      finalPriceWithTax.textContent = '鍚◣浠凤細鈥?鍏?绫?;
-      breakdown.innerHTML = '<div class="empty-hint">璇峰～鍏ュ澂甯冨叕鏂や环銆侀棬骞呫€佸厠閲嶅嵆鍙紑濮嬭绠?/div>';
-      return;
-    }
+    priceKg.textContent=fmt(taxKg);
+    priceMeter.textContent=fmt(taxMeter);
 
-    // 鈶?鍧竷鎴愭湰 = 绫充环 梅 (1 - 鎹熻€楃巼/100)
-    var fabricCost = meterPrice / (1 - loss / 100);
+    var colors=['#3d5a80','#5c7c99','#7a9bb5','#98b8d0','#b5d3e8','#d4eaf7','#c17a3e'];
+    var html='';
 
-    // 鈶?鏌撴暣鎴愭湰 = 鍧竷鎴愭湰 + 鍔犲伐璐瑰悎璁?    var dyeCost = fabricCost + processTotal;
+    html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[0]+'"></span>鍧竷鎴愭湰 (鎹熻€?+loss+'%)</span><span class="breakdown-value">'+fmt(fabricCost)+' 鍏?鍏枻</span></div>';
 
-    // 鈶?鍚鐞嗚垂 = 鏌撴暣鎴愭湰 + 杩愯惀绠＄悊璐?    var withMgmt = dyeCost + mgmt;
-
-    // 鈶?鍚繍璐?= 鍚鐞嗚垂 + 杩愯垂 + 鍏朵粬璐圭敤
-    var withShipping = withMgmt + ship + other;
-
-    // 鈶?涓嶅惈绋庝环 = 鍚繍璐?梅 (1 - 鍒╂鼎鐜?100)
-    var priceNoTax = withShipping / (1 - profit / 100);
-
-    // 鈶?鍚◣浠?= 涓嶅惈绋庝环 脳 绋庣偣绯绘暟
-    var priceWithTax = priceNoTax * tax;
-
-    finalPriceNoTax.textContent = formatMoney(priceNoTax) + ' 鍏?绫?;
-    finalPriceWithTax.textContent = '鍚◣浠凤細' + formatMoney(priceWithTax) + ' 鍏?绫?;
-
-    var colors = ['#3d5a80','#5c7c99','#7a9bb5','#98b8d0','#b5d3e8','#d4eaf7','#c17a3e'];
-    var html = '';
-
-    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[0] + '"></span>鍏枻浠?鈫?绫充环</span><span class="breakdown-value">' + formatMoney(meterPrice) + ' 鍏?绫?/span></div>';
-    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[0] + '"></span>鍧竷鎴愭湰 (鎹熻€? + loss + '%)</span><span class="breakdown-value">' + formatMoney(fabricCost) + ' 鍏?绫?/span></div>';
-
-    if (processes.length > 0) {
-      for (var k = 0; k < processes.length; k++) {
-        html += '<div class="breakdown-row"><span class="breakdown-label" style="padding-left:16px">' + processes[k].name + '</span><span class="breakdown-value">' + formatMoney(processes[k].price) + ' 鍏?绫?/span></div>';
+    if(procs.length>0){
+      for(var k=0;k<procs.length;k++){
+        html+='<div class="breakdown-row"><span class="breakdown-label" style="padding-left:16px">'+procs[k].name+'</span><span class="breakdown-value">'+fmt(procs[k].price)+' 鍏?鍏枻</span></div>';
       }
-      html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[1] + '"></span>鍔犲伐璐瑰悎璁?/span><span class="breakdown-value">' + formatMoney(processTotal) + ' 鍏?绫?/span></div>';
+      html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[1]+'"></span>鍔犲伐璐瑰悎璁?/span><span class="breakdown-value">'+fmt(procTotal)+' 鍏?鍏枻</span></div>';
     }
 
-    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[1] + '"></span>鏌撴暣鎴愭湰</span><span class="breakdown-value">' + formatMoney(dyeCost) + ' 鍏?绫?/span></div>';
-    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[2] + '"></span>鍚鐞嗚垂</span><span class="breakdown-value">' + formatMoney(withMgmt) + ' 鍏?绫?/span></div>';
+    html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[1]+'"></span>鏌撴暣鎴愭湰</span><span class="breakdown-value">'+fmt(dyeCost)+' 鍏?鍏枻</span></div>';
+    html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[2]+'"></span>鍚鐞嗚垂</span><span class="breakdown-value">'+fmt(withMgmt)+' 鍏?鍏枻</span></div>';
 
-    var shipLabel = '鍚繍璐?;
-    if (other > 0) shipLabel = '鍚繍璐?鍏朵粬';
-    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[3] + '"></span>' + shipLabel + '</span><span class="breakdown-value">' + formatMoney(withShipping) + ' 鍏?绫?/span></div>';
+    var shipLabel='鍚繍璐?;
+    if(other>0) shipLabel='鍚繍璐?鍏朵粬';
+    html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[3]+'"></span>'+shipLabel+'</span><span class="breakdown-value">'+fmt(withShip)+' 鍏?鍏枻</span></div>';
 
-    if (profit > 0) {
-      html += '<div class="breakdown-row highlight"><span class="breakdown-label"><span class="dot" style="background:' + colors[5] + '"></span>涓嶅惈绋庝环 (鍒╂鼎鐜?' + profit + '%)</span><span class="breakdown-value">' + formatMoney(priceNoTax) + ' 鍏?绫?/span></div>';
+    if(profit>0){
+      html+='<div class="breakdown-row highlight"><span class="breakdown-label"><span class="dot" style="background:'+colors[5]+'"></span>涓嶅惈绋庝环 (鍒╂鼎鐜?'+profit+'%)</span><span class="breakdown-value">'+fmt(noTax)+' 鍏?鍏枻</span></div>';
     }
 
-    html += '<div class="breakdown-row final"><span class="breakdown-label"><span class="dot" style="background:' + colors[6] + '"></span>鍚◣浠?(脳' + tax + ')</span><span class="breakdown-value">' + formatMoney(priceWithTax) + ' 鍏?绫?/span></div>';
+    html+='<div class="breakdown-row final"><span class="breakdown-label"><span class="dot" style="background:'+colors[6]+'"></span>鍚◣浠?(脳'+tax+')</span><span class="breakdown-value">'+fmt(taxKg)+' 鍏?鍏枻</span></div>';
 
-    breakdown.innerHTML = html;
+    if(kgPerM>0){
+      html+='<div class="breakdown-row" style="margin-top:4px;padding-top:10px;border-top:2px solid '+colors[0]+'"><span class="breakdown-label">姣忕背閲嶉噺</span><span class="breakdown-value">'+fmt(kgPerM)+' kg/m</span></div>';
+      html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[6]+'"></span>鍚◣浠?(绫?</span><span class="breakdown-value">'+fmt(taxMeter)+' 鍏?绫?/span></div>';
+    }
+
+    breakdown.innerHTML=html;
   }
 
-  window.addProcess = function(){
-    var items = processList.querySelectorAll('.process-item');
-    var idx = items.length + 1;
-    var div = document.createElement('div');
-    div.className = 'process-item';
-    div.innerHTML =
-      '<span class="proc-num">宸ュ簭' + idx + '</span>' +
-      '<input type="number" class="proc-price" placeholder="鍏?绫? step="0.01" min="0">' +
-      '<button class="btn-remove" title="鍒犻櫎" onclick="removeProcess(this)">&times;</button>';
+  window.addProcess=function(){
+    var items=processList.querySelectorAll('.process-item');
+    var idx=items.length+1;
+    var div=document.createElement('div');
+    div.className='process-item';
+    div.innerHTML='<span class="proc-num">宸ュ簭'+idx+'</span><input type="number" class="proc-price" placeholder="鍏?鍏枻" step="0.01" min="0"><button class="btn-remove" title="鍒犻櫎" onclick="removeProcess(this)">&times;</button>';
     processList.appendChild(div);
     bindInputs(div);
     refreshNumbers();
     recompute();
   };
 
-  window.removeProcess = function(btn){
-    var items = processList.querySelectorAll('.process-item');
-    if (items.length <= 1) {
-      items[0].querySelector('.proc-price').value = '';
+  window.removeProcess=function(btn){
+    var items=processList.querySelectorAll('.process-item');
+    if(items.length<=1){
+      items[0].querySelector('.proc-price').value='';
       recompute();
       return;
     }
@@ -561,38 +440,31 @@
   };
 
   function refreshNumbers(){
-    var items = processList.querySelectorAll('.process-item');
-    for (var i = 0; i < items.length; i++) {
-      items[i].querySelector('.proc-num').textContent = '宸ュ簭' + (i + 1);
-    }
+    var items=processList.querySelectorAll('.process-item');
+    for(var i=0;i<items.length;i++) items[i].querySelector('.proc-num').textContent='宸ュ簭'+(i+1);
   }
 
-  function bindInputs(container){
-    var inputs = container.querySelectorAll('input');
-    for (var i = 0; i < inputs.length; i++) {
-      inputs[i].addEventListener('input', recompute);
-    }
+  function bindInputs(el){
+    var inputs=el.querySelectorAll('input');
+    for(var i=0;i<inputs.length;i++) inputs[i].addEventListener('input',recompute);
   }
 
-  var fixedInputs = [fabricPricePerKg, fabricWidth, fabricWeight, lossRate, managementFee, shippingFee, otherFee, taxRate, profitRate];
-  for (var i = 0; i < fixedInputs.length; i++) {
-    fixedInputs[i].addEventListener('input', recompute);
-  }
+  [fabricPrice,lossRate,fabricWidth,fabricWeight,managementFee,shippingFee,otherFee,taxRate,profitRate].forEach(function(el){
+    el.addEventListener('input',recompute);
+  });
 
-  var initialProcesses = document.querySelectorAll('.process-item');
-  for (var j = 0; j < initialProcesses.length; j++) { bindInputs(initialProcesses[j]); }
+  var initial=document.querySelectorAll('.process-item');
+  for(var j=0;j<initial.length;j++) bindInputs(initial[j]);
 
-  var allNumbers = document.querySelectorAll('input[type="number"]');
-  for (var k = 0; k < allNumbers.length; k++) {
-    allNumbers[k].addEventListener('change', function(){
-      if (this.value && parseFloat(this.value) < 0) this.value = 0;
+  document.querySelectorAll('input[type=number]').forEach(function(el){
+    el.addEventListener('change',function(){
+      if(this.value&&parseFloat(this.value)<0) this.value=0;
       recompute();
     });
-  }
+  });
 
   recompute();
 })();
 </script>
-
 </body>
 </html>
