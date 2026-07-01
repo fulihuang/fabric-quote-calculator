@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>纺织面料报价计算器</title>
+<title>绾虹粐闈㈡枡鎶ヤ环璁＄畻鍣?/title>
 <style>
   :root {
     --bg: #f7f3ed;
@@ -336,88 +336,87 @@
 
 <div class="header">
   <div class="header-left">
-    <div class="header-icon">布</div>
+    <div class="header-icon">甯?/div>
     <div>
-      <div class="header-title">面料报价计算器</div>
-      <div class="header-sub">填入参数，实时计算销售价</div>
+      <div class="header-title">闈㈡枡鎶ヤ环璁＄畻鍣?/div>
+      <div class="header-sub">濉叆鍙傛暟锛屽疄鏃惰绠楅攢鍞环</div>
     </div>
   </div>
   <div class="unit-toggle" id="unitToggle">
-    <button data-unit="元/米">元/米</button>
-    <button data-unit="元/公斤" class="active">元/公斤</button>
+    <button data-unit="鍏?绫?>鍏?绫?/button>
+    <button data-unit="鍏?鍏枻" class="active">鍏?鍏枻</button>
   </div>
 </div>
 
 <div class="section">
-  <div class="section-title">基础参数</div>
+  <div class="section-title">鍩虹鍙傛暟</div>
   <div class="form-row">
     <div class="form-group">
-      <label class="form-label">坯布价格 <span class="unit" data-unit-label>元/公斤</span></label>
-      <input type="number" id="fabricPrice" placeholder="例：12.50" step="0.01" min="0" autofocus>
+      <label class="form-label">鍧竷浠锋牸 <span class="unit" data-unit-label>鍏?鍏枻</span></label>
+      <input type="number" id="fabricPrice" placeholder="渚嬶細12.50" step="0.01" min="0" autofocus>
     </div>
     <div class="form-group">
-      <label class="form-label">染整损耗率 <span class="unit">%</span></label>
-      <input type="number" id="lossRate" placeholder="例：5" step="0.1" min="0">
+      <label class="form-label">鏌撴暣鎹熻€楃巼 <span class="unit">%</span></label>
+      <input type="number" id="lossRate" placeholder="渚嬶細5" step="0.1" min="0">
     </div>
   </div>
 </div>
 
 <div class="section">
-  <div class="section-title">染整加工费</div>
+  <div class="section-title">鏌撴暣鍔犲伐璐?/div>
   <div class="process-list" id="processList">
     <div class="process-item">
-      <span class="proc-num">1</span>
-      <input type="text" class="proc-name" placeholder="工序名称，例：预定型" style="flex:1.2">
-      <input type="number" class="proc-price" placeholder="元/公斤" step="0.01" min="0" style="flex:0.8" data-unit-placeholder>
-      <button class="btn-remove" title="删除" onclick="removeProcess(this)">&times;</button>
+      <span class="proc-num">宸ュ簭1</span>
+      <input type="number" class="proc-price" placeholder="鍏?鍏枻" step="0.01" min="0" data-unit-placeholder>
+      <button class="btn-remove" title="鍒犻櫎" onclick="removeProcess(this)">&times;</button>
     </div>
   </div>
   <button class="btn-add" onclick="addProcess()">
-    <span style="font-size:1.2em;line-height:1">+</span> 添加工序
+    <span style="font-size:1.2em;line-height:1">+</span> 娣诲姞宸ュ簭
   </button>
 </div>
 
 <div class="section">
-  <div class="section-title">费用与利润</div>
+  <div class="section-title">璐圭敤涓庡埄娑?/div>
   <div class="form-row">
     <div class="form-group">
-      <label class="form-label">运营管理费 <span class="unit" data-unit-label>元/公斤</span></label>
+      <label class="form-label">杩愯惀绠＄悊璐?<span class="unit" data-unit-label>鍏?鍏枻</span></label>
       <input type="number" id="managementFee" value="0.95" step="0.01" min="0">
     </div>
     <div class="form-group">
-      <label class="form-label">运费 <span class="unit" data-unit-label>元/公斤</span></label>
-      <input type="number" id="shippingFee" placeholder="例：1.50" step="0.01" min="0">
+      <label class="form-label">杩愯垂 <span class="unit" data-unit-label>鍏?鍏枻</span></label>
+      <input type="number" id="shippingFee" placeholder="渚嬶細1.50" step="0.01" min="0">
     </div>
   </div>
   <div class="form-row">
     <div class="form-group">
-      <label class="form-label">税点系数</label>
+      <label class="form-label">绋庣偣绯绘暟</label>
       <input type="number" id="taxRate" value="1.06" step="0.001" min="1">
     </div>
     <div class="form-group">
-      <label class="form-label">利润率 <span class="unit">%</span></label>
-      <input type="number" id="profitRate" placeholder="例：8" step="0.1" min="0">
+      <label class="form-label">鍒╂鼎鐜?<span class="unit">%</span></label>
+      <input type="number" id="profitRate" placeholder="渚嬶細8" step="0.1" min="0">
     </div>
   </div>
 </div>
 
 <div class="result-section">
   <div class="result-header">
-    <div class="result-header-label">最终销售价</div>
-    <div class="result-header-price" id="finalPrice">— <span class="unit">元/公斤</span></div>
+    <div class="result-header-label">鏈€缁堥攢鍞环</div>
+    <div class="result-header-price" id="finalPrice">鈥?<span class="unit">鍏?鍏枻</span></div>
   </div>
   <div class="result-breakdown" id="breakdown">
-    <div class="empty-hint">请填入坯布价格和至少一道染整加工费即可开始计算</div>
+    <div class="empty-hint">璇峰～鍏ュ澂甯冧环鏍煎拰鑷冲皯涓€閬撴煋鏁村姞宸ヨ垂鍗冲彲寮€濮嬭绠?/div>
   </div>
 </div>
 
-<div class="footer">纺织面料报价计算器 &middot; 数据仅在本地计算</div>
+<div class="footer">绾虹粐闈㈡枡鎶ヤ环璁＄畻鍣?&middot; 鏁版嵁浠呭湪鏈湴璁＄畻</div>
 
 <script>
 (function(){
   var $ = function(id){ return document.getElementById(id); };
 
-  var currentUnit = '元/公斤';
+  var currentUnit = '鍏?鍏枻';
 
   var fabricPrice = $('fabricPrice');
   var lossRate = $('lossRate');
@@ -454,11 +453,9 @@
     var items = processList.querySelectorAll('.process-item');
     var result = [];
     for (var i = 0; i < items.length; i++) {
-      var item = items[i];
-      var name = item.querySelector('.proc-name').value.trim();
-      var price = parseFloat(item.querySelector('.proc-price').value);
-      if (name || !isNaN(price)) {
-        result.push({ name: name || '未命名工序', price: isNaN(price) ? 0 : price });
+      var price = parseFloat(items[i].querySelector('.proc-price').value);
+      if (!isNaN(price)) {
+        result.push({ name: '宸ュ簭' + (i + 1), price: price });
       }
     }
     return result;
@@ -484,8 +481,8 @@
     var hasBase = !isNaN(p) && (processTotal > 0 || processes.length > 0);
 
     if (!hasBase) {
-      finalPrice.innerHTML = '— <span class="unit">' + currentUnit + '</span>';
-      breakdown.innerHTML = '<div class="empty-hint">请填入坯布价格和至少一道染整加工费即可开始计算</div>';
+      finalPrice.innerHTML = '鈥?<span class="unit">' + currentUnit + '</span>';
+      breakdown.innerHTML = '<div class="empty-hint">璇峰～鍏ュ澂甯冧环鏍煎拰鑷冲皯涓€閬撴煋鏁村姞宸ヨ垂鍗冲彲寮€濮嬭绠?/div>';
       return;
     }
 
@@ -504,27 +501,27 @@
     var html = '';
 
     if (!isNaN(p)) {
-      html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[0] + '"></span>坯布价格</span><span class="breakdown-value">' + formatMoney(baseP) + ' ' + u + '</span></div>';
+      html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[0] + '"></span>鍧竷浠锋牸</span><span class="breakdown-value">' + formatMoney(baseP) + ' ' + u + '</span></div>';
     }
 
     if (processes.length > 0) {
       for (var k = 0; k < processes.length; k++) {
-        html += '<div class="breakdown-row"><span class="breakdown-label" style="padding-left:16px">└ ' + processes[k].name + '</span><span class="breakdown-value">' + formatMoney(processes[k].price) + ' ' + u + '</span></div>';
+        html += '<div class="breakdown-row"><span class="breakdown-label" style="padding-left:16px">鈹?' + processes[k].name + '</span><span class="breakdown-value">' + formatMoney(processes[k].price) + ' ' + u + '</span></div>';
       }
-      html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[0] + '"></span>加工费合计</span><span class="breakdown-value">' + formatMoney(step1) + ' ' + u + '</span></div>';
+      html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[0] + '"></span>鍔犲伐璐瑰悎璁?/span><span class="breakdown-value">' + formatMoney(step1) + ' ' + u + '</span></div>';
     }
 
-    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[1] + '"></span>染整成本 (含' + l + '%损耗)</span><span class="breakdown-value">' + formatMoney(step2) + ' ' + u + '</span></div>';
-    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[2] + '"></span>含管理费</span><span class="breakdown-value">' + formatMoney(step3) + ' ' + u + '</span></div>';
+    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[1] + '"></span>鏌撴暣鎴愭湰 (鍚? + l + '%鎹熻€?</span><span class="breakdown-value">' + formatMoney(step2) + ' ' + u + '</span></div>';
+    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[2] + '"></span>鍚鐞嗚垂</span><span class="breakdown-value">' + formatMoney(step3) + ' ' + u + '</span></div>';
 
     if (s > 0) {
-      html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[3] + '"></span>含运费</span><span class="breakdown-value">' + formatMoney(step4) + ' ' + u + '</span></div>';
+      html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[3] + '"></span>鍚繍璐?/span><span class="breakdown-value">' + formatMoney(step4) + ' ' + u + '</span></div>';
     }
 
-    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[4] + '"></span>含税价 (×' + t + ')</span><span class="breakdown-value">' + formatMoney(step5) + ' ' + u + '</span></div>';
+    html += '<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:' + colors[4] + '"></span>鍚◣浠?(脳' + t + ')</span><span class="breakdown-value">' + formatMoney(step5) + ' ' + u + '</span></div>';
 
     if (pr > 0) {
-      html += '<div class="breakdown-row highlight"><span class="breakdown-label"><span class="dot" style="background:' + colors[5] + '"></span>含利润 (' + pr + '%)</span><span class="breakdown-value">' + formatMoney(step6) + ' ' + u + '</span></div>';
+      html += '<div class="breakdown-row highlight"><span class="breakdown-label"><span class="dot" style="background:' + colors[5] + '"></span>鍚埄娑?(' + pr + '%)</span><span class="breakdown-value">' + formatMoney(step6) + ' ' + u + '</span></div>';
     }
 
     breakdown.innerHTML = html;
@@ -536,10 +533,9 @@
     var div = document.createElement('div');
     div.className = 'process-item';
     div.innerHTML =
-      '<span class="proc-num">' + idx + '</span>' +
-      '<input type="text" class="proc-name" placeholder="工序名称" style="flex:1.2">' +
-      '<input type="number" class="proc-price" placeholder="' + currentUnit + '" step="0.01" min="0" style="flex:0.8" data-unit-placeholder>' +
-      '<button class="btn-remove" title="删除" onclick="removeProcess(this)">&times;</button>';
+      '<span class="proc-num">宸ュ簭' + idx + '</span>' +
+      '<input type="number" class="proc-price" placeholder="' + currentUnit + '" step="0.01" min="0" data-unit-placeholder>' +
+      '<button class="btn-remove" title="鍒犻櫎" onclick="removeProcess(this)">&times;</button>';
     processList.appendChild(div);
     bindInputs(div);
     refreshNumbers();
@@ -549,9 +545,7 @@
   window.removeProcess = function(btn){
     var items = processList.querySelectorAll('.process-item');
     if (items.length <= 1) {
-      var inputs = items[0].querySelectorAll('input');
-      inputs[0].value = '';
-      inputs[1].value = '';
+      items[0].querySelector('.proc-price').value = '';
       recompute();
       return;
     }
@@ -563,7 +557,7 @@
   function refreshNumbers(){
     var items = processList.querySelectorAll('.process-item');
     for (var i = 0; i < items.length; i++) {
-      items[i].querySelector('.proc-num').textContent = i + 1;
+      items[i].querySelector('.proc-num').textContent = '宸ュ簭' + (i + 1);
     }
   }
 
