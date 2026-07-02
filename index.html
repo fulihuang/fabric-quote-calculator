@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>纺织面料报价计算器</title>
+<style>
+  :root {
+    --bg: #f7f3ed;
+    --surface: #fff;
+    --surface-alt: #faf7f2;
+    --text: #2c2416;
+    --text-secondary: #6b5e4a;
+    --text-tertiary: #9b8b73;
+    --border: #e3d9c8;
+    --accent: #3d5a80;
+    --accent-light: #e8eff6;
+    --highlight: #c17a3e;
+    --highlight-light: #fdf3e7;
+    --danger: #b5453c;
+    --danger-light: #fdf0ef;
+    --shadow-sm: 0 1px 3px rgba(44,36,22,0.06);
+    --shadow-md: 0 4px 12px rgba(44,36,22,0.08);
+    --radius-sm: 6px;
+    --radius-lg: 14px;
+    --font: 'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans SC',system-ui,sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  html{
+    font-family:var(--font);
+    font-size:15px;
+    color:var(--text);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased
+  }
+
+  body{
+    max-width:480px;
+    margin:0 auto;
+    padding:16px;
+    min-height:100dvh
+  }
+
+  .header{
+    padding:20px 0 12px;
+    display:flex;
+    align-items:center;
+    gap:12px
+  }
+  .header-icon{
+    width:40px;height:40px;
+    background:var(--accent);
+    border-radius:var(--radius-sm);
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;color:#fff
+  }
+  .header-title{font-size:1.25rem;font-weight:700}
+  .header-sub{font-size:.8rem;color:var(--text-tertiary);margin-top:2px}
+
+  .section{
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--border)
+  }
+  .section-title{
+    font-size:.85rem;font-weight:700;color:var(--accent);
+    letter-spacing:.06em;margin-bottom:14px;
+    display:flex;align-items:center;gap:8px
+  }
+  .section-title::before{
+    content:'';width:3px;height:16px;
+    background:var(--accent);border-radius:2px
+  }
+
+  .form-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+  .form-row:last-child{margin-bottom:0}
+  .form-group{flex:1;min-width:100px}
+
+  .form-label{
+    display:block;font-size:.78rem;font-weight:600;
+    color:var(--text-secondary);margin-bottom:5px
+  }
+  .form-label .unit{font-weight:400;color:var(--text-tertiary);font-size:.72rem}
+
+  input[type=number]{
+    width:100%;padding:10px 12px;font-size:.92rem;
+    font-family:var(--font);
+    border:1.5px solid var(--border);border-radius:var(--radius-sm);
+    background:var(--surface-alt);color:var(--text);
+    outline:none;-webkit-appearance:none
+  }
+  input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
+  input::placeholder{color:var(--text-tertiary)}
+
+  .process-list{display:flex;flex-direction:column;gap:8px}
+  .process-item{
+    display:flex;align-items:center;gap:8px;
+    padding:10px 12px;background:var(--surface-alt);
+    border-radius:var(--radius-sm);border:1px solid var(--border)
+  }
+  .process-item .proc-num{
+    font-size:.75rem;font-weight:700;color:var(--text-tertiary);
+    white-space:nowrap;min-width:36px
+  }
+  .process-item input{
+    flex:1;padding:7px 10px;font-size:.85rem;
+    border:1px solid var(--border);border-radius:var(--radius-sm);
+    background:#fff;min-width:0;font-family:var(--font)
+  }
+  .process-item input:focus{
+    border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-light);outline:none
+  }
+
+  .btn-remove{
+    width:30px;height:30px;border:none;border-radius:50%;
+    background:var(--danger-light);color:var(--danger);
+    cursor:pointer;font-size:1.1rem;
+    display:flex;align-items:center;justify-content:center
+  }
+  .btn-remove:hover{background:#f5d6d4}
+  .btn-remove:active{transform:scale(.9)}
+
+  .btn-add{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:9px 16px;font-size:.82rem;font-weight:600;
+    border:1.5px dashed var(--border);border-radius:var(--radius-sm);
+    background:transparent;color:var(--accent);cursor:pointer;margin-top:8px
+  }
+  .btn-add:hover{border-color:var(--accent);background:var(--accent-light)}
+  .btn-add:active{transform:scale(.97)}
+
+  .result-section{
+    background:var(--surface);border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-md);border:1px solid var(--border);
+    overflow:hidden;margin-top:4px
+  }
+  .result-header{
+    padding:16px 18px;background:var(--accent);color:#fff
+  }
+  .result-header-label{
+    font-size:.78rem;opacity:.85;letter-spacing:.04em
+  }
+  .result-price-row{
+    display:flex;gap:24px;margin-top:8px;flex-wrap:wrap
+  }
+  .result-price-item{flex:1;min-width:130px}
+  .result-price-item .price-label{
+    font-size:.7rem;opacity:.7;letter-spacing:.04em
+  }
+  .result-price-item .price-value{
+    font-size:1.6rem;font-weight:800;line-height:1.2
+  }
+
+  .result-breakdown{padding:14px 18px}
+  .breakdown-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:8px 0;font-size:.84rem;border-bottom:1px solid var(--border)
+  }
+  .breakdown-row:last-child{border-bottom:none}
+  .breakdown-label{
+    color:var(--text-secondary);display:flex;align-items:center;gap:6px
+  }
+  .breakdown-label .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .breakdown-value{font-weight:600;font-variant-numeric:tabular-nums;color:var(--text)}
+
+  .breakdown-row.highlight{
+    background:var(--highlight-light);margin:0 -18px;
+    padding:10px 18px;border-bottom:none;border-radius:var(--radius-sm)
+  }
+  .breakdown-row.highlight .breakdown-value{color:var(--highlight);font-size:.95rem;font-weight:700}
+
+  .breakdown-row.final{
+    margin:0 -18px;padding:12px 18px;
+    background:var(--accent-light);border-bottom:none;
+    border-radius:var(--radius-sm);font-weight:700
+  }
+  .breakdown-row.final .breakdown-value{color:var(--accent);font-size:1rem;font-weight:800}
+
+  .formula-section{
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--border)
+  }
+  .formula-list{list-style:none;padding:0}
+  .formula-list li{
+    padding:7px 0;font-size:.78rem;color:var(--text-secondary);
+    border-bottom:1px solid var(--border);line-height:1.5
+  }
+  .formula-list li:last-child{border-bottom:none}
+  .formula-list li strong{color:var(--accent);font-weight:700}
+
+  .empty-hint{text-align:center;padding:24px 18px;color:var(--text-tertiary);font-size:.82rem}
+  .footer{text-align:center;padding:20px 0 16px;font-size:.7rem;color:var(--text-tertiary)}
+
+  @media(max-width:380px){
+    body{padding:10px}.section,.formula-section{padding:14px}
+    .form-row{gap:8px}input[type=number]{padding:9px 10px;font-size:.85rem}
+    .result-price-row{gap:12px}
+    .result-price-item .price-value{font-size:1.3rem}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">布</div>
+  <div>
+    <div class="header-title">面料报价计算器</div>
+    <div class="header-sub">统一输入元/公斤，自动换算元/米</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">坯布参数</div>
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">坯布公斤价 <span class="unit">元/公斤</span></label>
+      <input type="number" id="fabricPrice" placeholder="例：50" step="0.01" min="0" autofocus>
+    </div>
+    <div class="form-group">
+      <label class="form-label">损耗率 <span class="unit">%</span></label>
+      <input type="number" id="lossRate" placeholder="例：5" step="0.1" min="0" max="100">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">门幅 <span class="unit">cm</span></label>
+      <input type="number" id="fabricWidth" placeholder="例：150" step="0.1" min="0">
+    </div>
+    <div class="form-group">
+      <label class="form-label">克重 <span class="unit">g/m²</span></label>
+      <input type="number" id="fabricWeight" placeholder="例：200" step="1" min="0">
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">染整加工费 <span class="unit">元/公斤</span></div>
+  <div class="process-list" id="processList">
+    <div class="process-item">
+      <span class="proc-num">工序1</span>
+      <input type="number" class="proc-price" placeholder="元/公斤" step="0.01" min="0">
+      <button class="btn-remove" title="删除" onclick="removeProcess(this)">&times;</button>
+    </div>
+  </div>
+  <button class="btn-add" onclick="addProcess()">+ 添加工序</button>
+</div>
+
+<div class="section">
+  <div class="section-title">费用与利润</div>
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">运营管理费 <span class="unit">元/公斤</span></label>
+      <input type="number" id="managementFee" value="0.95" step="0.01" min="0">
+    </div>
+    <div class="form-group">
+      <label class="form-label">运费 <span class="unit">元/公斤</span></label>
+      <input type="number" id="shippingFee" placeholder="例：1.50" step="0.01" min="0">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">其他费用 <span class="unit">元/公斤</span></label>
+      <input type="number" id="otherFee" placeholder="例：0.50" step="0.01" min="0">
+    </div>
+    <div class="form-group">
+      <label class="form-label">利润率 <span class="unit">%</span></label>
+      <input type="number" id="profitRate" placeholder="例：8" step="0.1" min="0" max="100">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">税点系数</label>
+      <input type="number" id="taxRate" value="1.06" step="0.001" min="1">
+    </div>
+    <div class="form-group"></div>
+  </div>
+</div>
+
+<div class="result-section">
+  <div class="result-header">
+    <div class="result-header-label">最终报价</div>
+    <div class="result-price-row">
+      <div class="result-price-item">
+        <div class="price-label">元/公斤</div>
+        <div class="price-value" id="priceKg">—</div>
+      </div>
+      <div class="result-price-item">
+        <div class="price-label">元/米 (含税)</div>
+        <div class="price-value" id="priceMeter">—</div>
+      </div>
+    </div>
+  </div>
+  <div class="result-breakdown" id="breakdown">
+    <div class="empty-hint">请填入坯布价格和规格即可开始计算</div>
+  </div>
+</div>
+
+<div class="formula-section">
+  <div class="section-title">计算公式</div>
+  <ul class="formula-list">
+    <li><strong>坯布成本</strong> = 坯布公斤价 ÷ (1 − 损耗率%)</li>
+    <li><strong>加工费合计</strong> = 各道工序金额之和（元/公斤）</li>
+    <li><strong>染整成本</strong> = 坯布成本 + 加工费合计</li>
+    <li><strong>+管理费</strong> = 染整成本 + 运营管理费</li>
+    <li><strong>+运费</strong> = +管理费 + 运费 + 其他费用</li>
+    <li><strong>不含税价</strong> = +运费 ÷ (1 − 利润率%)</li>
+    <li><strong>含税价(元/公斤)</strong> = 不含税价 × 税点系数</li>
+    <li><strong>每米重量(kg)</strong> = 门幅(cm) × 克重(g/m²) ÷ 100000</li>
+    <li><strong>含税价(元/米)</strong> = 含税价(元/公斤) × 每米重量</li>
+  </ul>
+</div>
+
+<div class="footer">纺织面料报价计算器</div>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+
+  var fabricPrice=$('fabricPrice');
+  var lossRate=$('lossRate');
+  var fabricWidth=$('fabricWidth');
+  var fabricWeight=$('fabricWeight');
+  var managementFee=$('managementFee');
+  var shippingFee=$('shippingFee');
+  var otherFee=$('otherFee');
+  var taxRate=$('taxRate');
+  var profitRate=$('profitRate');
+  var processList=$('processList');
+  var breakdown=$('breakdown');
+  var priceKg=$('priceKg');
+  var priceMeter=$('priceMeter');
+
+  function collectProcesses(){
+    var items=processList.querySelectorAll('.process-item');
+    var result=[];
+    for(var i=0;i<items.length;i++){
+      var p=parseFloat(items[i].querySelector('.proc-price').value);
+      if(!isNaN(p)) result.push({name:'工序'+(i+1),price:p});
+    }
+    return result;
+  }
+
+  function num(v){return isNaN(v)?0:v;}
+  function fmt(v){return Math.abs(v)<.001?'0.00':v.toFixed(2);}
+
+  function recompute(){
+    var fp=num(parseFloat(fabricPrice.value));
+    var loss=num(parseFloat(lossRate.value));
+    var width=num(parseFloat(fabricWidth.value));
+    var weight=num(parseFloat(fabricWeight.value));
+    var mgmt=num(parseFloat(managementFee.value));
+    var ship=num(parseFloat(shippingFee.value));
+    var other=num(parseFloat(otherFee.value));
+    var tax=num(parseFloat(taxRate.value))||1;
+    var profit=num(parseFloat(profitRate.value));
+
+    var procs=collectProcesses();
+    var procTotal=0;
+    for(var i=0;i<procs.length;i++) procTotal+=procs[i].price;
+
+    // 公斤维度完整计算
+    var fabricCost=fp/(1-loss/100);
+    var dyeCost=fabricCost+procTotal;
+    var withMgmt=dyeCost+mgmt;
+    var withShip=withMgmt+ship+other;
+    var noTax=withShip/(1-profit/100);
+    var taxKg=noTax*tax;
+
+    // 米价换算（门幅cm）
+    var kgPerM=width>0?width*weight/100000:0;
+    var taxMeter=kgPerM>0?taxKg*kgPerM:0;
+
+    priceKg.textContent=fmt(taxKg);
+    priceMeter.textContent=fmt(taxMeter);
+
+    var colors=['#3d5a80','#5c7c99','#7a9bb5','#98b8d0','#b5d3e8','#d4eaf7','#c17a3e'];
+    var html='';
+
+    html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[0]+'"></span>坯布成本 (损耗'+loss+'%)</span><span class="breakdown-value">'+fmt(fabricCost)+' 元/公斤</span></div>';
+
+    if(procs.length>0){
+      for(var k=0;k<procs.length;k++){
+        html+='<div class="breakdown-row"><span class="breakdown-label" style="padding-left:16px">'+procs[k].name+'</span><span class="breakdown-value">'+fmt(procs[k].price)+' 元/公斤</span></div>';
+      }
+      html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[1]+'"></span>加工费合计</span><span class="breakdown-value">'+fmt(procTotal)+' 元/公斤</span></div>';
+    }
+
+    html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[1]+'"></span>染整成本</span><span class="breakdown-value">'+fmt(dyeCost)+' 元/公斤</span></div>';
+    html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[2]+'"></span>含管理费</span><span class="breakdown-value">'+fmt(withMgmt)+' 元/公斤</span></div>';
+
+    var shipLabel='含运费';
+    if(other>0) shipLabel='含运费+其他';
+    html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[3]+'"></span>'+shipLabel+'</span><span class="breakdown-value">'+fmt(withShip)+' 元/公斤</span></div>';
+
+    if(profit>0){
+      html+='<div class="breakdown-row highlight"><span class="breakdown-label"><span class="dot" style="background:'+colors[5]+'"></span>不含税价 (利润率 '+profit+'%)</span><span class="breakdown-value">'+fmt(noTax)+' 元/公斤</span></div>';
+    }
+
+    html+='<div class="breakdown-row final"><span class="breakdown-label"><span class="dot" style="background:'+colors[6]+'"></span>含税价 (×'+tax+')</span><span class="breakdown-value">'+fmt(taxKg)+' 元/公斤</span></div>';
+
+    if(kgPerM>0){
+      html+='<div class="breakdown-row" style="margin-top:4px;padding-top:10px;border-top:2px solid '+colors[0]+'"><span class="breakdown-label">每米重量</span><span class="breakdown-value">'+fmt(kgPerM)+' kg/m</span></div>';
+      html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[6]+'"></span>含税价 (米)</span><span class="breakdown-value">'+fmt(taxMeter)+' 元/米</span></div>';
+    }
+
+    breakdown.innerHTML=html;
+  }
+
+  window.addProcess=function(){
+    var items=processList.querySelectorAll('.process-item');
+    var idx=items.length+1;
+    var div=document.createElement('div');
+    div.className='process-item';
+    div.innerHTML='<span class="proc-num">工序'+idx+'</span><input type="number" class="proc-price" placeholder="元/公斤" step="0.01" min="0"><button class="btn-remove" title="删除" onclick="removeProcess(this)">&times;</button>';
+    processList.appendChild(div);
+    bindInputs(div);
+    refreshNumbers();
+    recompute();
+  };
+
+  window.removeProcess=function(btn){
+    var items=processList.querySelectorAll('.process-item');
+    if(items.length<=1){
+      items[0].querySelector('.proc-price').value='';
+      recompute();
+      return;
+    }
+    btn.closest('.process-item').remove();
+    refreshNumbers();
+    recompute();
+  };
+
+  function refreshNumbers(){
+    var items=processList.querySelectorAll('.process-item');
+    for(var i=0;i<items.length;i++) items[i].querySelector('.proc-num').textContent='工序'+(i+1);
+  }
+
+  function bindInputs(el){
+    var inputs=el.querySelectorAll('input');
+    for(var i=0;i<inputs.length;i++) inputs[i].addEventListener('input',recompute);
+  }
+
+  [fabricPrice,lossRate,fabricWidth,fabricWeight,managementFee,shippingFee,otherFee,taxRate,profitRate].forEach(function(el){
+    el.addEventListener('input',recompute);
+  });
+
+  var initial=document.querySelectorAll('.process-item');
+  for(var j=0;j<initial.length;j++) bindInputs(initial[j]);
+
+  document.querySelectorAll('input[type=number]').forEach(function(el){
+    el.addEventListener('change',function(){
+      if(this.value&&parseFloat(this.value)<0) this.value=0;
+      recompute();
+    });
+  });
+
+  recompute();
+})();
+</script>
+</body>
+</html>
