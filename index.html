@@ -5,34 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>纺织面料报价计算器</title>
 <style>
-  :root {
-    --bg: #f7f3ed;
-    --surface: #fff;
-    --surface-alt: #faf7f2;
-    --text: #2c2416;
-    --text-secondary: #6b5e4a;
-    --text-tertiary: #9b8b73;
-    --border: #e3d9c8;
-    --accent: #3d5a80;
-    --accent-light: #e8eff6;
-    --highlight: #c17a3e;
-    --highlight-light: #fdf3e7;
-    --danger: #b5453c;
-    --danger-light: #fdf0ef;
-    --shadow-sm: 0 1px 3px rgba(44,36,22,0.06);
-    --shadow-md: 0 4px 12px rgba(44,36,22,0.08);
-    --radius-sm: 6px;
-    --radius-lg: 14px;
-    --font: 'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans SC',system-ui,sans-serif;
-  }
+  :root{--bg:#f7f3ed;--surface:#fff;--surface-alt:#faf7f2;--text:#2c2416;--text-secondary:#6b5e4a;--text-tertiary:#9b8b73;--border:#e3d9c8;--accent:#3d5a80;--accent-light:#e8eff6;--highlight:#c17a3e;--highlight-light:#fdf3e7;--danger:#b5453c;--danger-light:#fdf0ef;--shadow-sm:0 1px 3px rgba(44,36,22,0.06);--shadow-md:0 4px 12px rgba(44,36,22,0.08);--radius-sm:6px;--radius-lg:14px;--font:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans SC',system-ui,sans-serif}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{font-family:var(--font);font-size:15px;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
   body{max-width:480px;margin:0 auto;padding:16px;min-height:100dvh}
 
-  .header{padding:20px 0 12px;display:flex;align-items:center;gap:12px}
+  .header{padding:10px 0 12px;display:flex;align-items:center;gap:12px}
   .header-icon{width:40px;height:40px;background:var(--accent);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff}
   .header-title{font-size:1.25rem;font-weight:700}
   .header-sub{font-size:.8rem;color:var(--text-tertiary);margin-top:2px}
+
+  .tabs{display:flex;margin-bottom:14px;background:var(--surface);border-radius:var(--radius-lg);padding:6px;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+  .tab-btn{flex:1;padding:10px 0;font-size:.85rem;font-weight:600;border:none;border-radius:var(--radius-sm);cursor:pointer;background:transparent;color:var(--text-secondary);font-family:var(--font);transition:all .15s ease}
+  .tab-btn.active{background:var(--accent);color:#fff}
+
+  .page{display:none}
+  .page.active{display:block}
 
   .section{background:var(--surface);border-radius:var(--radius-lg);padding:18px;margin-bottom:14px;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
   .section-title{font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:.06em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
@@ -44,7 +32,7 @@
   .form-label{display:block;font-size:.78rem;font-weight:600;color:var(--text-secondary);margin-bottom:5px}
   .form-label .unit{font-weight:400;color:var(--text-tertiary);font-size:.72rem}
 
-  input[type=number]{width:100%;padding:10px 12px;font-size:.92rem;font-family:var(--font);border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface-alt);color:var(--text);outline:none;-webkit-appearance:none}
+  input[type=number],input[type=text],input[type=date]{width:100%;padding:10px 12px;font-size:.92rem;font-family:var(--font);border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface-alt);color:var(--text);outline:none;-webkit-appearance:none}
   input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);background:#fff}
   input::placeholder{color:var(--text-tertiary)}
 
@@ -73,14 +61,12 @@
   .result-price-item{flex:1;min-width:130px}
   .result-price-item .price-label{font-size:.7rem;opacity:.7;letter-spacing:.04em}
   .result-price-item .price-value{font-size:1.6rem;font-weight:800;line-height:1.2}
-
   .result-breakdown{padding:14px 18px}
   .breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:.84rem;border-bottom:1px solid var(--border)}
   .breakdown-row:last-child{border-bottom:none}
   .breakdown-label{color:var(--text-secondary);display:flex;align-items:center;gap:6px}
   .breakdown-label .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
   .breakdown-value{font-weight:600;font-variant-numeric:tabular-nums;color:var(--text)}
-
   .breakdown-row.highlight{background:var(--highlight-light);margin:0 -18px;padding:10px 18px;border-bottom:none;border-radius:var(--radius-sm)}
   .breakdown-row.highlight .breakdown-value{color:var(--highlight);font-size:.95rem;font-weight:700}
   .breakdown-row.final{margin:0 -18px;padding:12px 18px;background:var(--accent-light);border-bottom:none;border-radius:var(--radius-sm);font-weight:700}
@@ -91,15 +77,25 @@
   .btn-save:active{transform:scale(.97)}
   .btn-save:disabled{opacity:.5;cursor:not-allowed}
 
-  .history-section{background:var(--surface);border-radius:var(--radius-lg);padding:18px;margin-bottom:14px;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
-  .history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-  .btn-clear{font-size:.75rem;color:var(--danger);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:var(--radius-sm);font-family:var(--font)}
-  .btn-clear:hover{background:var(--danger-light)}
+  .search-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .search-bar input{flex:1;min-width:100px;padding:8px 10px;font-size:.82rem;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-family:var(--font)}
+  .search-bar input:focus{border-color:var(--accent);outline:none}
+  .search-bar .search-date{flex:0 0 128px}
 
-  .history-item{padding:12px;margin-bottom:8px;background:var(--surface-alt);border-radius:var(--radius-sm);border:1px solid var(--border);position:relative}
-  .history-item .hi-time{font-size:.72rem;color:var(--text-tertiary);margin-bottom:6px}
-  .history-item .hi-summary{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;font-weight:600}
-  .history-item .hi-price{color:var(--accent);font-size:.95rem;font-weight:800}
+  .history-toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+  .tool-btn{font-size:.78rem;padding:8px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);cursor:pointer;font-family:var(--font);background:var(--surface);color:var(--text-secondary);font-weight:600}
+  .tool-btn:hover{background:var(--bg)}
+  .tool-btn.danger{color:var(--danger);border-color:var(--danger-light)}
+  .tool-btn.primary{color:var(--accent);border-color:var(--accent);background:var(--accent-light)}
+  .history-count{font-size:.75rem;color:var(--text-tertiary);margin-bottom:8px}
+
+  .history-item{padding:14px;margin-bottom:8px;background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--border)}
+  .history-item .hi-meta{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;flex-wrap:wrap;gap:4px}
+  .history-item .hi-customer{font-weight:700;font-size:.88rem;color:var(--text)}
+  .history-item .hi-product{font-size:.78rem;color:var(--accent);background:var(--accent-light);padding:2px 8px;border-radius:10px}
+  .history-item .hi-date{font-size:.72rem;color:var(--text-tertiary)}
+  .history-item .hi-summary{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--text-secondary);margin-bottom:4px}
+  .history-item .hi-price{color:var(--highlight);font-size:1rem;font-weight:800}
   .history-item .hi-detail{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);font-size:.75rem;color:var(--text-secondary);line-height:1.6}
   .history-item .hi-detail.open{display:block}
   .history-item .hi-actions{display:flex;gap:8px;margin-top:8px}
@@ -113,15 +109,13 @@
   .formula-list li{padding:7px 0;font-size:.78rem;color:var(--text-secondary);border-bottom:1px solid var(--border);line-height:1.5}
   .formula-list li:last-child{border-bottom:none}
   .formula-list li strong{color:var(--accent);font-weight:700}
-
-  .empty-hint{text-align:center;padding:24px 18px;color:var(--text-tertiary);font-size:.82rem}
+  .empty-hint{text-align:center;padding:32px 18px;color:var(--text-tertiary);font-size:.85rem}
   .footer{text-align:center;padding:20px 0 16px;font-size:.7rem;color:var(--text-tertiary)}
 
   @media(max-width:380px){
-    body{padding:10px}.section,.formula-section,.history-section{padding:14px}
-    .form-row{gap:8px}input[type=number]{padding:9px 10px;font-size:.85rem}
+    body{padding:10px}.section,.formula-section{padding:14px}
+    .form-row{gap:8px}input{padding:9px 10px;font-size:.85rem}
     .result-price-row{gap:12px}.result-price-item .price-value{font-size:1.3rem}
-    .process-item .proc-fields .field-group.loss{flex:0 0 80px}
   }
 </style>
 </head>
@@ -129,29 +123,36 @@
 
 <div class="header">
   <div class="header-icon">布</div>
-  <div>
-    <div class="header-title">面料报价计算器</div>
-    <div class="header-sub">统一输入元/公斤，自动换算元/米</div>
+  <div><div class="header-title">面料报价计算器</div><div class="header-sub">工序独立损耗 · 自动换算 · 历史存档</div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchPage('calc')">报价计算</button>
+  <button class="tab-btn" onclick="switchPage('history')">报价历史</button>
+</div>
+
+<div class="page active" id="pageCalc">
+
+<div class="section">
+  <div class="section-title">报价信息</div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-label">客户名称</label><input type="text" id="customerName" placeholder="例：XX纺织有限公司"></div>
+    <div class="form-group"><label class="form-label">产品名称</label><input type="text" id="productName" placeholder="例：涤纶弹力布"></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label class="form-label">报价日期</label><input type="date" id="quoteDate"></div>
+    <div class="form-group"></div>
   </div>
 </div>
 
 <div class="section">
   <div class="section-title">坯布参数</div>
   <div class="form-row">
-    <div class="form-group">
-      <label class="form-label">坯布公斤价 <span class="unit">元/公斤</span></label>
-      <input type="number" id="fabricPrice" placeholder="例：50" step="0.01" min="0" autofocus>
-    </div>
-    <div class="form-group">
-      <label class="form-label">门幅 <span class="unit">cm</span></label>
-      <input type="number" id="fabricWidth" placeholder="例：150" step="0.1" min="0">
-    </div>
+    <div class="form-group"><label class="form-label">坯布公斤价 <span class="unit">元/公斤</span></label><input type="number" id="fabricPrice" placeholder="例：50" step="0.01" min="0" autofocus></div>
+    <div class="form-group"><label class="form-label">门幅 <span class="unit">cm</span></label><input type="number" id="fabricWidth" placeholder="例：150" step="0.1" min="0"></div>
   </div>
   <div class="form-row">
-    <div class="form-group">
-      <label class="form-label">克重 <span class="unit">g/m²</span></label>
-      <input type="number" id="fabricWeight" placeholder="例：200" step="1" min="0">
-    </div>
+    <div class="form-group"><label class="form-label">克重 <span class="unit">g/m²</span></label><input type="number" id="fabricWeight" placeholder="例：200" step="1" min="0"></div>
     <div class="form-group"></div>
   </div>
 </div>
@@ -161,16 +162,7 @@
   <div class="process-list" id="processList">
     <div class="process-item">
       <span class="proc-num">工序1</span>
-      <div class="proc-fields">
-        <div class="field-group">
-          <label>费用 (元/kg)</label>
-          <input type="number" class="proc-price" placeholder="0.00" step="0.01" min="0">
-        </div>
-        <div class="field-group loss">
-          <label>损耗率 (%)</label>
-          <input type="number" class="proc-loss" placeholder="0" step="0.1" min="0" max="100">
-        </div>
-      </div>
+      <div class="proc-fields"><div class="field-group"><label>费用 (元/kg)</label><input type="number" class="proc-price" placeholder="0.00" step="0.01" min="0"></div><div class="field-group loss"><label>损耗率 (%)</label><input type="number" class="proc-loss" placeholder="0" step="0.1" min="0" max="100"></div></div>
       <button class="btn-remove" title="删除" onclick="removeProcess(this)">&times;</button>
     </div>
   </div>
@@ -180,30 +172,15 @@
 <div class="section">
   <div class="section-title">费用与利润</div>
   <div class="form-row">
-    <div class="form-group">
-      <label class="form-label">运营管理费 <span class="unit">元/公斤</span></label>
-      <input type="number" id="managementFee" value="0.95" step="0.01" min="0">
-    </div>
-    <div class="form-group">
-      <label class="form-label">运费 <span class="unit">元/公斤</span></label>
-      <input type="number" id="shippingFee" placeholder="例：1.50" step="0.01" min="0">
-    </div>
+    <div class="form-group"><label class="form-label">运营管理费 <span class="unit">元/公斤</span></label><input type="number" id="managementFee" value="0.95" step="0.01" min="0"></div>
+    <div class="form-group"><label class="form-label">运费 <span class="unit">元/公斤</span></label><input type="number" id="shippingFee" placeholder="例：1.50" step="0.01" min="0"></div>
   </div>
   <div class="form-row">
-    <div class="form-group">
-      <label class="form-label">其他费用 <span class="unit">元/公斤</span></label>
-      <input type="number" id="otherFee" placeholder="例：0.50" step="0.01" min="0">
-    </div>
-    <div class="form-group">
-      <label class="form-label">利润率 <span class="unit">%</span></label>
-      <input type="number" id="profitRate" placeholder="例：8" step="0.1" min="0" max="100">
-    </div>
+    <div class="form-group"><label class="form-label">其他费用 <span class="unit">元/公斤</span></label><input type="number" id="otherFee" placeholder="例：0.50" step="0.01" min="0"></div>
+    <div class="form-group"><label class="form-label">利润率 <span class="unit">%</span></label><input type="number" id="profitRate" placeholder="例：8" step="0.1" min="0" max="100"></div>
   </div>
   <div class="form-row">
-    <div class="form-group">
-      <label class="form-label">税点系数</label>
-      <input type="number" id="taxRate" value="1.06" step="0.001" min="1">
-    </div>
+    <div class="form-group"><label class="form-label">税点系数</label><input type="number" id="taxRate" value="1.06" step="0.001" min="1"></div>
     <div class="form-group"></div>
   </div>
 </div>
@@ -211,31 +188,10 @@
 <div class="result-section">
   <div class="result-header">
     <div class="result-header-label">最终报价</div>
-    <div class="result-price-row">
-      <div class="result-price-item">
-        <div class="price-label">元/公斤 (含税)</div>
-        <div class="price-value" id="priceKg">—</div>
-      </div>
-      <div class="result-price-item">
-        <div class="price-label">元/米 (含税)</div>
-        <div class="price-value" id="priceMeter">—</div>
-      </div>
-    </div>
+    <div class="result-price-row"><div class="result-price-item"><div class="price-label">元/公斤 (含税)</div><div class="price-value" id="priceKg">—</div></div><div class="result-price-item"><div class="price-label">元/米 (含税)</div><div class="price-value" id="priceMeter">—</div></div></div>
   </div>
-  <div class="result-breakdown" id="breakdown">
-    <div class="empty-hint">请填入坯布价格和规格即可开始计算</div>
-  </div>
+  <div class="result-breakdown" id="breakdown"><div class="empty-hint">请填入坯布价格和规格即可开始计算</div></div>
   <button class="btn-save" id="btnSave" onclick="saveQuote()" disabled>保存此报价</button>
-</div>
-
-<div class="history-section" id="historySection">
-  <div class="section-title">报价历史</div>
-  <div id="historyList">
-    <div class="empty-hint">暂无保存的报价记录</div>
-  </div>
-  <div style="text-align:right;margin-top:8px">
-    <button class="btn-clear" id="btnClear" onclick="clearHistory()" style="display:none">清空全部记录</button>
-  </div>
 </div>
 
 <div class="formula-section">
@@ -253,147 +209,118 @@
   </ul>
 </div>
 
+</div>
+
+<div class="page" id="pageHistory">
+<div class="section">
+  <div class="section-title">搜索历史</div>
+  <div class="search-bar">
+    <input type="text" id="searchCustomer" placeholder="客户名称" oninput="filterHistory()">
+    <input type="text" id="searchProduct" placeholder="产品名称" oninput="filterHistory()">
+    <input type="date" id="searchDateFrom" class="search-date" oninput="filterHistory()" title="起始日期">
+    <input type="date" id="searchDateTo" class="search-date" oninput="filterHistory()" title="截止日期">
+  </div>
+  <div class="history-toolbar">
+    <button class="tool-btn primary" onclick="exportHistory()">导出全部</button>
+    <button class="tool-btn" onclick="importHistory()">导入</button>
+    <button class="tool-btn danger" onclick="clearHistory()">清空</button>
+  </div>
+  <div class="history-count" id="historyCount"></div>
+  <div id="historyList"><div class="empty-hint">暂无保存的报价记录</div></div>
+</div>
+</div>
+
 <div class="footer">纺织面料报价计算器</div>
+<input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImport(event)">
 
 <script>
 (function(){
   var $=function(id){return document.getElementById(id);};
   var STORAGE_KEY='fabric_quote_history';
 
-  var fabricPrice=$('fabricPrice');
-  var fabricWidth=$('fabricWidth');
-  var fabricWeight=$('fabricWeight');
-  var managementFee=$('managementFee');
-  var shippingFee=$('shippingFee');
-  var otherFee=$('otherFee');
-  var taxRate=$('taxRate');
-  var profitRate=$('profitRate');
-  var processList=$('processList');
-  var breakdown=$('breakdown');
-  var priceKg=$('priceKg');
-  var priceMeter=$('priceMeter');
-  var btnSave=$('btnSave');
-  var btnClear=$('btnClear');
-  var historyList=$('historyList');
+  var fp=$('fabricPrice'),fw=$('fabricWidth'),fwt=$('fabricWeight');
+  var mgmt=$('managementFee'),ship=$('shippingFee'),other=$('otherFee');
+  var tax=$('taxRate'),profit=$('profitRate'),plist=$('processList');
+  var bd=$('breakdown'),pKg=$('priceKg'),pM=$('priceMeter');
+  var btnSave=$('btnSave'),cn=$('customerName'),pn=$('productName'),qd=$('quoteDate');
 
-  var currentResult=null;
-
-  function collectProcesses(){
-    var items=processList.querySelectorAll('.process-item');
-    var result=[];
-    for(var i=0;i<items.length;i++){
-      var priceEl=items[i].querySelector('.proc-price');
-      var lossEl=items[i].querySelector('.proc-loss');
-      var price=parseFloat(priceEl.value);
-      var loss=parseFloat(lossEl.value);
-      result.push({name:'工序'+(i+1),price:isNaN(price)?0:price,loss:isNaN(loss)?0:loss});
-    }
-    return result;
-  }
+  var today=new Date();
+  qd.value=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
 
   function num(v){return isNaN(v)?0:v;}
   function fmt(v){return Math.abs(v)<.001?'0.00':v.toFixed(2);}
 
-  function getSnapshot(){
-    var procs=collectProcesses();
+  var cur=null;
+
+  function getProcs(){
+    var its=plist.querySelectorAll('.process-item'),r=[];
+    for(var i=0;i<its.length;i++){
+      var p=parseFloat(its[i].querySelector('.proc-price').value);
+      var l=parseFloat(its[i].querySelector('.proc-loss').value);
+      r.push({name:'工序'+(i+1),price:isNaN(p)?0:p,loss:isNaN(l)?0:l});
+    }
+    return r;
+  }
+
+  function snap(){
+    var pr=getProcs();
     return {
-      fabricPrice:num(parseFloat(fabricPrice.value)),
-      fabricWidth:num(parseFloat(fabricWidth.value)),
-      fabricWeight:num(parseFloat(fabricWeight.value)),
-      processes:procs.map(function(p){return {price:p.price,loss:p.loss};}),
-      managementFee:num(parseFloat(managementFee.value)),
-      shippingFee:num(parseFloat(shippingFee.value)),
-      otherFee:num(parseFloat(otherFee.value)),
-      profitRate:num(parseFloat(profitRate.value)),
-      taxRate:num(parseFloat(taxRate.value))||1
+      fabricPrice:num(parseFloat(fp.value)),fabricWidth:num(parseFloat(fw.value)),
+      fabricWeight:num(parseFloat(fwt.value)),processes:pr.map(function(p){return{price:p.price,loss:p.loss};}),
+      managementFee:num(parseFloat(mgmt.value)),shippingFee:num(parseFloat(ship.value)),
+      otherFee:num(parseFloat(other.value)),profitRate:num(parseFloat(profit.value)),
+      taxRate:num(parseFloat(tax.value))||1
     };
   }
 
-  function recompute(){
-    var s=getSnapshot();
-    var procs=collectProcesses();
-
-    // 坯布成本就是坯布公斤价（损耗在工序中体现）
-    var fabricCost=s.fabricPrice;
-    var procTotal=0;
-
-    // 逐步计算每个工序后的累计成本
-    var steps=[];
-    var current=fabricCost;
-    var totalPrice=0;
-    var totalLoss=0;
-    for(var i=0;i<procs.length;i++){
-      var pf=procs[i].price;
-      var pl=procs[i].loss;
-      procTotal+=pf;
-      if(pf>0||pl>0){
-        current=(current+pf)/(1-pl/100);
-        steps.push({name:procs[i].name,price:pf,loss:pl,cumulative:current});
-      }
+  function comp(){
+    var s=snap(),pr=getProcs();
+    var fc=s.fabricPrice,curQ=fc,st=[],pt=0;
+    for(var i=0;i<pr.length;i++){
+      var pf=pr[i].price,pl=pr[i].loss;pt+=pf;
+      if(pf>0||pl>0){curQ=(curQ+pf)/(1-pl/100);st.push({name:pr[i].name,price:pf,loss:pl,cumulative:curQ});}
     }
+    var dc=st.length>0?st[st.length-1].cumulative:fc;
+    var wm=dc+s.managementFee,ws=wm+s.shippingFee+s.otherFee;
+    var nt=ws/(1-s.profitRate/100),tk=nt*s.taxRate;
+    var kpm=s.fabricWidth>0?s.fabricWidth*s.fabricWeight/100000:0,tm=kpm>0?tk*kpm:0;
 
-    var dyeCost=steps.length>0?steps[steps.length-1].cumulative:fabricCost;
-    var withMgmt=dyeCost+s.managementFee;
-    var withShip=withMgmt+s.shippingFee+s.otherFee;
-    var noTax=withShip/(1-s.profitRate/100);
-    var taxKg=noTax*s.taxRate;
-    var kgPerM=s.fabricWidth>0?s.fabricWidth*s.fabricWeight/100000:0;
-    var taxMeter=kgPerM>0?taxKg*kgPerM:0;
-
-    currentResult={
-      fabricCost:fabricCost,steps:steps,dyeCost:dyeCost,
-      withMgmt:withMgmt,withShip:withShip,noTax:noTax,
-      taxKg:taxKg,kgPerM:kgPerM,taxMeter:taxMeter,
-      procTotal:procTotal,snapshot:s
+    cur={
+      fabricCost:fc,steps:st,dyeCost:dc,withMgmt:wm,withShip:ws,noTax:nt,
+      taxKg:tk,kgPerM:kpm,taxMeter:tm,procTotal:pt,snapshot:s
     };
 
-    priceKg.textContent=fmt(taxKg);
-    priceMeter.textContent=fmt(taxMeter);
+    pKg.textContent=fmt(tk);pM.textContent=fmt(tm);
     btnSave.disabled=!(s.fabricPrice>0);
 
-    var colors=['#3d5a80','#5c7c99','#7a9bb5','#98b8d0','#b5d3e8','#d4eaf7','#c17a3e'];
-    var html='';
-
-    html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[0]+'"></span>坯布成本</span><span class="breakdown-value">'+fmt(fabricCost)+' 元/公斤</span></div>';
-
-    for(var k=0;k<steps.length;k++){
-      var st=steps[k];
-      html+='<div class="breakdown-row" style="padding-left:12px">';
-      html+='<span class="breakdown-label" style="font-size:.78rem">'+st.name+': +'+fmt(st.price)+' 元/kg (损耗 '+fmt(st.loss)+'%)</span>';
-      html+='<span class="breakdown-value" style="font-size:.78rem">→ '+fmt(st.cumulative)+'</span>';
-      html+='</div>';
+    var c=['#3d5a80','#5c7c99','#7a9bb5','#98b8d0','#b5d3e8','#d4eaf7','#c17a3e'];
+    var h='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+c[0]+'"></span>坯布成本</span><span class="breakdown-value">'+fmt(fc)+' 元/公斤</span></div>';
+    for(var k=0;k<st.length;k++){
+      h+='<div class="breakdown-row" style="padding-left:12px"><span class="breakdown-label" style="font-size:.78rem">'+st[k].name+': +'+fmt(st[k].price)+' (损耗 '+fmt(st[k].loss)+'%)</span><span class="breakdown-value" style="font-size:.78rem">&rarr; '+fmt(st[k].cumulative)+'</span></div>';
     }
-
-    html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[1]+'"></span>染整成本</span><span class="breakdown-value">'+fmt(dyeCost)+' 元/公斤</span></div>';
-    html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[2]+'"></span>含管理费 (+'+fmt(s.managementFee)+')</span><span class="breakdown-value">'+fmt(withMgmt)+' 元/公斤</span></div>';
-
-    var shipLabel='含运费 (+'+fmt(s.shippingFee)+')';
-    if(s.otherFee>0) shipLabel='含运费+其他 (+'+(s.shippingFee+s.otherFee).toFixed(2)+')';
-    html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[3]+'"></span>'+shipLabel+'</span><span class="breakdown-value">'+fmt(withShip)+' 元/公斤</span></div>';
-
-    if(s.profitRate>0){
-      html+='<div class="breakdown-row highlight"><span class="breakdown-label"><span class="dot" style="background:'+colors[5]+'"></span>不含税价 (利润率 '+fmt(s.profitRate)+'%)</span><span class="breakdown-value">'+fmt(noTax)+' 元/公斤</span></div>';
-    }
-
-    html+='<div class="breakdown-row final"><span class="breakdown-label"><span class="dot" style="background:'+colors[6]+'"></span>含税价 (×'+fmt(s.taxRate)+')</span><span class="breakdown-value">'+fmt(taxKg)+' 元/公斤</span></div>';
-
-    if(kgPerM>0){
-      html+='<div class="breakdown-row" style="margin-top:4px;padding-top:10px;border-top:2px solid '+colors[0]+'"><span class="breakdown-label">每米重量</span><span class="breakdown-value">'+fmt(kgPerM)+' kg/m</span></div>';
-      html+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+colors[6]+'"></span>含税价 (米)</span><span class="breakdown-value">'+fmt(taxMeter)+' 元/米</span></div>';
-    }
-
-    breakdown.innerHTML=html;
+    h+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+c[1]+'"></span>染整成本</span><span class="breakdown-value">'+fmt(dc)+' 元/公斤</span></div>';
+    h+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+c[2]+'"></span>含管理费 (+'+fmt(s.managementFee)+')</span><span class="breakdown-value">'+fmt(wm)+' 元/公斤</span></div>';
+    var sl='含运费 (+'+fmt(s.shippingFee)+')';if(s.otherFee>0)sl='含运费+其他 (+'+(s.shippingFee+s.otherFee).toFixed(2)+')';
+    h+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+c[3]+'"></span>'+sl+'</span><span class="breakdown-value">'+fmt(ws)+' 元/公斤</span></div>';
+    if(s.profitRate>0)h+='<div class="breakdown-row highlight"><span class="breakdown-label"><span class="dot" style="background:'+c[5]+'"></span>不含税价 (利润率 '+fmt(s.profitRate)+'%)</span><span class="breakdown-value">'+fmt(nt)+' 元/公斤</span></div>';
+    h+='<div class="breakdown-row final"><span class="breakdown-label"><span class="dot" style="background:'+c[6]+'"></span>含税价 (&times;'+fmt(s.taxRate)+')</span><span class="breakdown-value">'+fmt(tk)+' 元/公斤</span></div>';
+    if(kpm>0){h+='<div class="breakdown-row" style="margin-top:4px;padding-top:10px;border-top:2px solid '+c[0]+'"><span class="breakdown-label">每米重量</span><span class="breakdown-value">'+fmt(kpm)+' kg/m</span></div>';h+='<div class="breakdown-row"><span class="breakdown-label"><span class="dot" style="background:'+c[6]+'"></span>含税价 (米)</span><span class="breakdown-value">'+fmt(tm)+' 元/米</span></div>';}
+    bd.innerHTML=h;
   }
 
-  // ===== 历史记录 =====
-  function loadHistory(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch(e){return[];}}
-  function saveHistory(data){localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}
+  window.switchPage=function(p){
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+    document.querySelectorAll('.page').forEach(function(g){g.classList.remove('active');});
+    if(p==='calc'){$('pageCalc').classList.add('active');document.querySelector('.tab-btn:first-child').classList.add('active');}
+    else{$('pageHistory').classList.add('active');document.querySelector('.tab-btn:last-child').classList.add('active');renderHistory();}
+  };
 
   window.saveQuote=function(){
-    if(!currentResult||!currentResult.snapshot.fabricPrice) return;
-    var r=currentResult,s=r.snapshot;
-    var record={
-      time:new Date().toLocaleString('zh-CN'),
+    if(!cur||!cur.snapshot.fabricPrice)return;
+    var r=cur,s=r.snapshot;
+    var rec={
+      time:new Date().toISOString(),date:qd.value||today.toISOString().slice(0,10),
+      customer:cn.value.trim(),product:pn.value.trim(),
       fabricPrice:s.fabricPrice,fabricWidth:s.fabricWidth,fabricWeight:s.fabricWeight,
       processes:s.processes,managementFee:s.managementFee,shippingFee:s.shippingFee,
       otherFee:s.otherFee,profitRate:s.profitRate,taxRate:s.taxRate,
@@ -401,94 +328,119 @@
       withShip:r.withShip,noTax:r.noTax,taxKg:r.taxKg,kgPerM:r.kgPerM,taxMeter:r.taxMeter,
       steps:r.steps,procTotal:r.procTotal
     };
-    var history=loadHistory();history.unshift(record);saveHistory(history);renderHistory();
+    var h=loadHistory();h.unshift(rec);saveHistory(h);
+    cn.value='';pn.value='';qd.value=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+    alert('已保存到报价历史');
   };
 
-  window.deleteHistory=function(index){var h=loadHistory();h.splice(index,1);saveHistory(h);renderHistory();};
-  window.clearHistory=function(){saveHistory([]);renderHistory();};
-  window.toggleDetail=function(idx){var el=document.getElementById('hi-detail-'+idx);if(el)el.classList.toggle('open');};
+  function loadHistory(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch(e){return[];}}
+  function saveHistory(d){localStorage.setItem(STORAGE_KEY,JSON.stringify(d));}
 
-  function renderHistory(){
-    var history=loadHistory();
-    if(history.length===0){historyList.innerHTML='<div class="empty-hint">暂无保存的报价记录</div>';btnClear.style.display='none';return;}
-    btnClear.style.display='inline-block';
+  window.deleteHistory=function(i){var h=loadHistory();h.splice(i,1);saveHistory(h);renderHistory();};
+  window.clearHistory=function(){if(confirm('确认清空全部报价记录？')){saveHistory([]);renderHistory();}};
+  window.toggleDetail=function(i){var el=document.getElementById('hi-detail-'+i);if(el)el.classList.toggle('open');};
+  window.filterHistory=function(){
+    var cu=($('searchCustomer').value||'').trim().toLowerCase();
+    var pr=($('searchProduct').value||'').trim().toLowerCase();
+    var fr=$('searchDateFrom').value||'',to=$('searchDateTo').value||'';
+    var h=loadHistory();
+    h=h.filter(function(r){
+      if(cu&&(r.customer||'').toLowerCase().indexOf(cu)===-1)return false;
+      if(pr&&(r.product||'').toLowerCase().indexOf(pr)===-1)return false;
+      if(fr&&r.date<fr)return false;
+      if(to&&r.date>to)return false;
+      return true;
+    });
+    renderList(h);
+  };
+
+  function renderList(data){
+    var list=$('historyList'),count=$('historyCount');
+    if(!data) data=loadHistory();
+    count.textContent='共 '+data.length+' 条';
+    if(!data.length){list.innerHTML='<div class="empty-hint">暂无匹配的报价记录</div>';return;}
     var html='';
-    for(var i=0;i<history.length;i++){
-      var h=history[i];
+    for(var i=0;i<data.length;i++){
+      var r=data[i],dt=r.date||r.time.slice(0,10);
       html+='<div class="history-item">';
-      html+='<div class="hi-time">'+h.time+'</div>';
-      html+='<div class="hi-summary"><span>坯布'+fmt(h.fabricPrice)+'元/kg | '+h.fabricWidth+'cm/'+h.fabricWeight+'g</span><span class="hi-price">'+fmt(h.taxKg)+' / '+fmt(h.taxMeter)+'</span></div>';
+      html+='<div class="hi-meta"><span class="hi-customer">'+(r.customer||'未填写')+'</span><span class="hi-date">'+dt+'</span></div>';
+      html+='<div class="hi-meta"><span class="hi-product">'+(r.product||'未命名')+'</span></div>';
+      html+='<div class="hi-summary"><span>坯布'+fmt(r.fabricPrice)+'元/kg | '+r.fabricWidth+'cm/'+r.fabricWeight+'g';
+      if(r.steps&&r.steps.length){html+=' | '+r.steps.length+'道工序';}
+      html+='</span><span class="hi-price">'+fmt(r.taxKg)+' / '+fmt(r.taxMeter)+'</span></div>';
       html+='<div class="hi-detail" id="hi-detail-'+i+'">';
-      html+='坯布成本: '+fmt(h.fabricCost)+' 元/公斤<br>';
-      if(h.steps)for(var j=0;j<h.steps.length;j++){
-        html+='工序'+(j+1)+': +'+fmt(h.steps[j].price)+' 元/kg (损耗 '+fmt(h.steps[j].loss)+'%) → '+fmt(h.steps[j].cumulative)+'<br>';
-      }
-      html+='染整成本: '+fmt(h.dyeCost)+' 元/公斤<br>';
-      html+='含管理费: '+fmt(h.withMgmt)+' 元/公斤<br>';
-      html+='含运费: '+fmt(h.withShip)+' 元/公斤<br>';
-      if(h.profitRate>0)html+='不含税价(利润率'+fmt(h.profitRate)+'%): '+fmt(h.noTax)+' 元/公斤<br>';
-      html+='含税价: '+fmt(h.taxKg)+' 元/公斤<br>';
-      if(h.kgPerM>0){html+='每米重量: '+fmt(h.kgPerM)+' kg/m<br>';html+='含税价: '+fmt(h.taxMeter)+' 元/米';}
+      if(r.steps)for(var j=0;j<r.steps.length;j++){html+='<strong>'+r.steps[j].name+'</strong>: +'+fmt(r.steps[j].price)+' 元/kg (损耗 '+fmt(r.steps[j].loss)+'%) &rarr; '+fmt(r.steps[j].cumulative)+'<br>';}
+      html+='染整成本: '+fmt(r.dyeCost)+' 元/kg<br>';
+      html+='含管理费: '+fmt(r.withMgmt)+' 元/kg<br>';
+      html+='含运费: '+fmt(r.withShip)+' 元/kg<br>';
+      if(r.profitRate>0)html+='不含税价(利润率'+fmt(r.profitRate)+'%): '+fmt(r.noTax)+' 元/kg<br>';
+      html+='含税价: '+fmt(r.taxKg)+' 元/kg<br>';
+      if(r.kgPerM>0){html+='每米重量: '+fmt(r.kgPerM)+' kg/m<br>含税价(米): '+fmt(r.taxMeter)+' 元/米';}
       html+='</div>';
       html+='<div class="hi-actions"><button class="hi-btn" onclick="toggleDetail('+i+')">展开详情</button><button class="hi-btn del" onclick="deleteHistory('+i+')">删除</button></div>';
       html+='</div>';
     }
-    historyList.innerHTML=html;
+    list.innerHTML=html;$('historyCount').textContent='显示 '+data.length+' / 共 '+loadHistory().length+' 条';
   }
 
-  // ===== 工序管理 =====
+  function renderHistory(){renderList(null);}
+
+  window.exportHistory=function(){
+    var data=JSON.stringify(loadHistory(),null,2);
+    var blob=new Blob([data],{type:'application/json'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='fabric-quotes-'+today.toISOString().slice(0,10)+'.json';
+    a.click();URL.revokeObjectURL(a.href);
+  };
+
+  window.importHistory=function(){$('importFile').click();};
+  window.handleImport=function(e){
+    var file=e.target.files[0];if(!file)return;
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      try{
+        var imported=JSON.parse(ev.target.result);
+        if(!Array.isArray(imported)){alert('无效的导入文件');return;}
+        var existing=loadHistory();
+        var merged=imported.concat(existing);
+        // deduplicate by time
+        var seen={},dedup=[];
+        for(var i=0;i<merged.length;i++){
+          if(!seen[merged[i].time]){seen[merged[i].time]=true;dedup.push(merged[i]);}
+        }
+        dedup.sort(function(a,b){return b.time.localeCompare(a.time);});
+        saveHistory(dedup);renderHistory();
+        alert('已导入 '+imported.length+' 条，合并后共 '+dedup.length+' 条');
+      }catch(ex){alert('文件格式错误');}
+    };
+    reader.readAsText(file);
+    e.target.value='';
+  };
+
   window.addProcess=function(){
-    var items=processList.querySelectorAll('.process-item');
-    var idx=items.length+1;
-    var div=document.createElement('div');
-    div.className='process-item';
-    div.innerHTML='<span class="proc-num">工序'+idx+'</span><div class="proc-fields"><div class="field-group"><label>费用 (元/kg)</label><input type="number" class="proc-price" placeholder="0.00" step="0.01" min="0"></div><div class="field-group loss"><label>损耗率 (%)</label><input type="number" class="proc-loss" placeholder="0" step="0.1" min="0" max="100"></div></div><button class="btn-remove" title="删除" onclick="removeProcess(this)">&times;</button>';
-    processList.appendChild(div);
-    bindProcessInputs(div);
-    refreshNumbers();
-    recompute();
+    var items=plist.querySelectorAll('.process-item'),idx=items.length+1;
+    var d=document.createElement('div');d.className='process-item';
+    d.innerHTML='<span class="proc-num">工序'+idx+'</span><div class="proc-fields"><div class="field-group"><label>费用 (元/kg)</label><input type="number" class="proc-price" placeholder="0.00" step="0.01" min="0"></div><div class="field-group loss"><label>损耗率 (%)</label><input type="number" class="proc-loss" placeholder="0" step="0.1" min="0" max="100"></div></div><button class="btn-remove" title="删除" onclick="removeProcess(this)">&times;</button>';
+    plist.appendChild(d);bindP(d);renum();comp();
   };
 
   window.removeProcess=function(btn){
-    var items=processList.querySelectorAll('.process-item');
-    if(items.length<=1){
-      items[0].querySelector('.proc-price').value='';
-      items[0].querySelector('.proc-loss').value='';
-      recompute();return;
-    }
-    btn.closest('.process-item').remove();
-    refreshNumbers();recompute();
+    var items=plist.querySelectorAll('.process-item');
+    if(items.length<=1){items[0].querySelector('.proc-price').value='';items[0].querySelector('.proc-loss').value='';comp();return;}
+    btn.closest('.process-item').remove();renum();comp();
   };
 
-  function refreshNumbers(){
-    var items=processList.querySelectorAll('.process-item');
-    for(var i=0;i<items.length;i++)items[i].querySelector('.proc-num').textContent='工序'+(i+1);
-  }
+  function renum(){var its=plist.querySelectorAll('.process-item');for(var i=0;i<its.length;i++)its[i].querySelector('.proc-num').textContent='工序'+(i+1);}
+  function bindP(el){el.querySelectorAll('input').forEach(function(i){i.addEventListener('input',comp);});}
 
-  function bindProcessInputs(el){
-    var inputs=el.querySelectorAll('input');
-    for(var i=0;i<inputs.length;i++)inputs[i].addEventListener('input',recompute);
-  }
+  [fp,fw,fwt,mgmt,ship,other,tax,profit].forEach(function(e){e.addEventListener('input',comp);});
+  document.querySelectorAll('.process-item').forEach(bindP);
 
-  // bind base inputs
-  [fabricPrice,fabricWidth,fabricWeight,managementFee,shippingFee,otherFee,taxRate,profitRate].forEach(function(el){
-    el.addEventListener('input',recompute);
+  document.querySelectorAll('input[type=number]').forEach(function(e){
+    e.addEventListener('change',function(){if(this.value&&parseFloat(this.value)<0)this.value=0;comp();});
   });
 
-  // bind initial process
-  var initial=document.querySelectorAll('.process-item');
-  for(var j=0;j<initial.length;j++)bindProcessInputs(initial[j]);
-
-  // clamp negative
-  document.querySelectorAll('input[type=number]').forEach(function(el){
-    el.addEventListener('change',function(){
-      if(this.value&&parseFloat(this.value)<0)this.value=0;
-      recompute();
-    });
-  });
-
-  renderHistory();
-  recompute();
+  comp();
 })();
 </script>
 </body>
